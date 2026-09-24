@@ -1,0 +1,16 @@
+{
+  "agent-log": {
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ../scripts/agent-log-hook.mjs antigravity",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

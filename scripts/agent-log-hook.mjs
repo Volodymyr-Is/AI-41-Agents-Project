@@ -30,7 +30,13 @@ if (tool === 'apply_patch') {
   }
 }
 
-const dir = join(process.env.CLAUDE_PROJECT_DIR ?? process.cwd(), '.agent-log');
+// Визначаємо корінь проекту: якщо хук викликано з .agents/, cwd буде .agents
+const rootDir = process.env.CLAUDE_PROJECT_DIR ?? event.workspacePaths?.[0] ?? (process.cwd().endsWith('.agents') ? join(process.cwd(), '..') : process.cwd());
+const dir = join(rootDir, '.agent-log');
 mkdirSync(dir, { recursive: true });
-const row = { ts: new Date().toISOString(), tool, input, result, session: event.session_id ?? event.sessionId ?? 'unknown', source };
+const session = event.session_id ?? event.sessionId ?? event.conversationId ?? 'unknown';
+const row = { ts: new Date().toISOString(), tool, input, result, session, source };
 appendFileSync(join(dir, `${source}.jsonl`), `${JSON.stringify(row)}\n`);
+
+// Antigravity PostToolUse hook очікує валідний JSON у stdout
+process.stdout.write('{}\n');
