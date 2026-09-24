@@ -1,5 +1,13 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch",
+        "hooks": [
+          { "type": "command", "command": "node scripts/guard-env.mjs codex", "timeout": 10, "statusMessage": "Перевірка .env" }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "hooks": [
