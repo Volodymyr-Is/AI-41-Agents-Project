@@ -20,7 +20,8 @@
 - Тести не ходять у мережу і не викликають платні API.
 - Модифікаційні git-команди: `git add`, `git commit`, `git push`, `git merge` - лише після мого «так».
 - Деструктивні git-команди: `git reset`, `git clean`, `git restore`, `git checkout .`, `git branch -D` - лише після мого «так».
-- `npm install`, `npm update`, `package.json` і `package-lock.json` — лише після мого «так».
+- `npm install`, `npm update`, `npx install`, `npx update`, `package.json` і `package-lock.json` — лише після мого «так».
+- Виконання команд `npm run ...` `npx run ...`, не описаних в `## Команди` — лише після мого «так».
 - Перед створенням або модифікацією файлів, пропонуй план та обговорюй його зі мною
 
 ## Домовленості
