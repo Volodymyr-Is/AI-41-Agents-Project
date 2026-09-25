@@ -29,7 +29,7 @@ if (tool === 'apply_patch') {
   const patch = Array.isArray(args.command) ? args.command.join('\n') : String(args.command ?? '');
   input.files = [...patch.matchAll(/^\*\*\* (?:Add File|Update File|Delete File|Move to): (.+)$/gm)].map((m) => m[1].trim());
 } else {
-  for (const key of ['file_path', 'filePath', 'path', 'command', 'CommandLine', 'pattern', 'Query', 'url', 'Url', 'name', 'skill', 'SearchPath', 'TargetFile', 'DirectoryPath']) {
+  for (const key of ['file_path', 'filePath', 'path', 'command', 'CommandLine', 'pattern', 'Query', 'url', 'Url', 'name', 'skill', 'AbsolutePath', 'SearchPath', 'TargetFile', 'DirectoryPath']) {
     if (typeof args[key] === 'string') input[key] = args[key].slice(0, 200);
   }
 }

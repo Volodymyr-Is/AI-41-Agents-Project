@@ -18,3 +18,5 @@
 {"ts":"2026-09-25T13:37:58.729Z","tool":"Bash","input":{"command":"npm.cmd test"},"result":"ok","session":"01a0d8c2-e976-7951-be3c-c14e9dd2af66","source":"codex"}
 {"ts":"2026-09-25T13:37:59.685Z","tool":"Bash","input":{"command":"npm.cmd run typecheck"},"result":"ok","session":"01a0d8c2-e976-7951-be3c-c14e9dd2af66","source":"codex"}
 {"ts":"2026-09-25T13:38:01.595Z","tool":"Bash","input":{"command":"npm.cmd run lint"},"result":"ok","session":"01a0d8c2-e976-7951-be3c-c14e9dd2af66","source":"codex"}
+{"ts":"2026-09-25T14:45:33.276Z","tool":"view_file","input":{"target":".env.local"},"result":"denied","session":"test-guard","source":"codex"}
+{"ts":"2026-09-25T14:46:26.961Z","tool":"Bash","input":{"command":"Test-Path -LiteralPath .env.local -PathType Leaf"},"result":"ok","session":"01a0d8fb-a069-7b92-a811-77053b0cc1ee","source":"codex"}
