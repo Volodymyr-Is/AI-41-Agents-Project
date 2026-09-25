@@ -1,12 +1,26 @@
 {
-  "agent-log": {
+  "agent-log-pre": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ../scripts/agent-log-hook.mjs antigravity pre",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "agent-log-post": {
     "PostToolUse": [
       {
         "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "node ../scripts/agent-log-hook.mjs antigravity",
+            "command": "node ../scripts/agent-log-hook.mjs antigravity post",
             "timeout": 10
           }
         ]

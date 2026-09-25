@@ -19,6 +19,8 @@ export default function HomePage() {
       <h1 style={{ margin: 0, fontSize: 'clamp(1.75rem, 5vw, 3rem)', letterSpacing: '-0.02em' }}>
         {COURSE_TITLE}
       </h1>
+      <h2 style={{ margin: 0 }}>Привіт, Я - Codex!</h2>
+      <h2 style={{ margin: 0 }}>Привіт, Я - Antigravity!</h2>
       <p style={{ margin: 0, color: 'var(--muted)', fontSize: '1.1rem' }}>{COURSE_SUBTITLE}</p>
       <p
         style={{
