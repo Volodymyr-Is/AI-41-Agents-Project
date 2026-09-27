@@ -33,3 +33,17 @@
 {"ts":"2026-09-27T14:29:59.228Z","tool":"list_files","input":{"path":"app/api"},"result":"ok","session":"agent-loop-gemini-2026-09-27T14-29-47-754Z","source":"agent-loop"}
 {"ts":"2026-09-27T14:30:01.594Z","tool":"list_files","input":{"path":"app/api/health"},"result":"ok","session":"agent-loop-gemini-2026-09-27T14-29-47-754Z","source":"agent-loop"}
 {"ts":"2026-09-27T14:32:33.932Z","tool":"list_files","input":{"path":"."},"result":"ok","session":"agent-loop-gemini-2026-09-27T14-32-31-382Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:19:15.567Z","tool":"list_files","input":{"path":"."},"result":"ok","session":"agent-loop-ollama-messages-2026-09-27T18-17-22-939Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:28:16.294Z","tool":"list_files","input":{"path":"."},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:29:23.054Z","tool":"list_files","input":{"path":"src"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:29:24.337Z","tool":"read_file","input":{"path":"src/health.ts"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:29:31.350Z","tool":"list_files","input":{"path":"tests"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:29:32.683Z","tool":"read_file","input":{"path":"tests/health.test.ts"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:30:39.547Z","tool":"list_files","input":{"path":"app"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:30:40.962Z","tool":"list_files","input":{"path":"app/api"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:30:42.107Z","tool":"list_files","input":{"path":"app/api/health"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:30:43.439Z","tool":"read_file","input":{"path":"app/api/health/route.ts"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:30:52.041Z","tool":"terminal","input":{"name":"run health test","command":"cd /repo && npx vitest run tests/health.test.ts 2>&1"},"result":"error","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:31:20.537Z","tool":"read_file","input":{"path":"src/health.ts"},"result":"ok","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:31:29.133Z","tool":"terminal","input":{"name":"run health test","command":"cd /repo && npx vitest run tests/health.test.ts 2>&1"},"result":"error","session":"agent-loop-openrouter-2026-09-27T18-28-10-301Z","source":"agent-loop"}
+{"ts":"2026-09-27T18:32:39.569Z","tool":"list_files","input":{"path":"."},"result":"ok","session":"agent-loop-gemini-2026-09-27T18-32-37-855Z","source":"agent-loop"}
