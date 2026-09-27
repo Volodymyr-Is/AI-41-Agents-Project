@@ -13,6 +13,7 @@
 | 2026-09-25 | Antigravity CLI / IDE, Gemini 3.7 Flash | plan mode | L0 -> L1 | Крок 03: Реалізація `GET /api/health` | Склав план для App Router, реалізував маршрут `GET` | Перевірив відсутність зайвих файлів і зміну схеми | `npm test`, `npm run build` | `lab1/health-antigravity` |
 | 2026-09-26 | Власний цикл, Ollama qwen3:4b | read-only loop (L1) | L1 | Крок 08: Прогін власного циклу на `/api/health` | Запропонував структуру JSON з кодом маршруту | Перевірив пропозицію, верифікував зупинки й валідацію | `npm test` 90/90 passed | `.agent-log/agent-loop.jsonl` |
 | 2026-09-26 | AI SDK 7 ToolLoopAgent, Mock model | user-approval (L1/L2) | L1 -> L2 | Крок 09: Цикл на SDK з підтвердженням `write_file` | Запропонував перенести цикл на SDK та налаштувати `toolApproval` | Перевірив блокування деструктивних дій без схвалення | `tests/agent-aisdk.test.ts` 3/3 passed, `npm test` 93/93 | `tests/agent-aisdk.test.ts` |
+| 2026-09-27 | AI SDK 7 + Langfuse OTEL | default (L1) | L1 | Крок 10: Деплой із трасуванням (Next.js route + OpenTelemetry) | Створив `instrumentation.ts`, singleton процесор Langfuse, ендпоінт `/api/agent` | Перевірив збірку `npm run build` та облік спанів | `npm run build`, `ƒ /api/agent` dynamic | `app/api/agent/route.ts` |
 
 ## Мова артефактів
 
