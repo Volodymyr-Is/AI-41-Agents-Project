@@ -1,0 +1,55 @@
+npx tsx --env-file=.env.local scripts/measure-loop.ts ollama-messages 1
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 10038 | 9122 | 22628 | 0 | 0.000000 | 324440 | agent-loop-ollama-messages-2026-09-26T15-42-08-927Z |
+
+Валідних структурованих виходів: 0 з 1
+
+
+
+npx tsx --env-file=.env.local scripts/measure-loop.ts ollama-messages 10
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9228 | 8701 | 24576 | 0 | 0.000000 | 341759 | agent-loop-ollama-messages-2026-09-26T15-49-30-595Z |
+| 2 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9697 | 9046 | 23642 | 0 | 0.000000 | 322240 | agent-loop-ollama-messages-2026-09-26T15-55-12-362Z |
+| 3 | ollama-messages | messages | qwen3:4b | done | 12 | 9777 | 9330 | 22508 | 0 | 0.000000 | 302033 | agent-loop-ollama-messages-2026-09-26T16-00-34-603Z |
+| 4 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9429 | 8776 | 23104 | 0 | 0.000000 | 316379 | agent-loop-ollama-messages-2026-09-26T16-05-36-636Z |
+| 5 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9496 | 9016 | 23371 | 0 | 0.000000 | 330073 | agent-loop-ollama-messages-2026-09-26T16-10-53-016Z |
+| 6 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9630 | 9036 | 23769 | 0 | 0.000000 | 335959 | agent-loop-ollama-messages-2026-09-26T16-16-23-092Z |
+| 7 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9228 | 8757 | 24143 | 0 | 0.000000 | 341622 | agent-loop-ollama-messages-2026-09-26T16-21-59-051Z |
+| 8 | ollama-messages | messages | qwen3:4b | done | 12 | 9874 | 9144 | 24237 | 0 | 0.000000 | 336604 | agent-loop-ollama-messages-2026-09-26T16-27-40-674Z |
+| 9 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9965 | 9257 | 23494 | 0 | 0.000000 | 322200 | agent-loop-ollama-messages-2026-09-26T16-33-17-282Z |
+| 10 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9764 | 9057 | 22880 | 0 | 0.000000 | 311006 | agent-loop-ollama-messages-2026-09-26T16-38-39-482Z |
+
+Валідних структурованих виходів: 2 з 10
+{
+  "summary": "Додано ендпоінт GET /api/health за допомогою файлу app/api/health/route.ts та контракт src/health.ts для проходу тестів.",
+  "files": [
+    {
+      "path": "src/health.ts",
+      "content": "export interface HealthResponse {\n  status: 'ok';\n}"
+    },
+    {
+      "path": "app/api/health/route.ts",
+      "content": "import { NextResponse } from 'next/server';\n\nexport async function GET() {\n  return NextResponse.json({ status: 'ok' });\n}"
+    }
+  ]
+}
+
+
+URL="https://ai-41-agents-project.vercel.app/api/agent"; for p in 'Котра зараз година?' 'Привітайся одним реченням' 'Скільки хвилин лишилось до півночі?'; do printf '{"prompt":"%s"}' "$p" | curl -s -X POST "$URL" -H 'Content-Type: application/json; charset=utf-8' --data-binary @-; echo; done
+
+
+npx tsx --env-file=.env.local scripts/measure-loop.ts ollama-messages 1
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9988 | 8812 | 23751 | 0 | 0.000000 | 412477 | agent-loop-ollama-messages-2026-09-27T18-17-22-939Z |
+
+Валідних структурованих виходів: 0 з 1
+
+npx tsx --env-file=.env.local scripts/measure-loop.ts openrouter 1
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | openrouter | chat-completions | nvidia/nemotron-3.5-lightning:free | max-steps | 12 | 14444 | 0 | 1933 | 0 | 0.000000 | 198831 | agent-loop-openrouter-2026-09-27T18-28-10-301Z |
+
+Валідних структурованих виходів: 0 з 1
