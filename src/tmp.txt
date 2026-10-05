@@ -1,0 +1,129 @@
+npx tsx --env-file=.env.local scripts/measure-loop.ts ollama-messages 1
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 10038 | 9122 | 22628 | 0 | 0.000000 | 324440 | agent-loop-ollama-messages-2026-09-26T15-42-08-927Z |
+
+Валідних структурованих виходів: 0 з 1
+
+
+
+npx tsx --env-file=.env.local scripts/measure-loop.ts ollama-messages 10
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9228 | 8701 | 24576 | 0 | 0.000000 | 341759 | agent-loop-ollama-messages-2026-09-26T15-49-30-595Z |
+| 2 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9697 | 9046 | 23642 | 0 | 0.000000 | 322240 | agent-loop-ollama-messages-2026-09-26T15-55-12-362Z |
+| 3 | ollama-messages | messages | qwen3:4b | done | 12 | 9777 | 9330 | 22508 | 0 | 0.000000 | 302033 | agent-loop-ollama-messages-2026-09-26T16-00-34-603Z |
+| 4 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9429 | 8776 | 23104 | 0 | 0.000000 | 316379 | agent-loop-ollama-messages-2026-09-26T16-05-36-636Z |
+| 5 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9496 | 9016 | 23371 | 0 | 0.000000 | 330073 | agent-loop-ollama-messages-2026-09-26T16-10-53-016Z |
+| 6 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9630 | 9036 | 23769 | 0 | 0.000000 | 335959 | agent-loop-ollama-messages-2026-09-26T16-16-23-092Z |
+| 7 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9228 | 8757 | 24143 | 0 | 0.000000 | 341622 | agent-loop-ollama-messages-2026-09-26T16-21-59-051Z |
+| 8 | ollama-messages | messages | qwen3:4b | done | 12 | 9874 | 9144 | 24237 | 0 | 0.000000 | 336604 | agent-loop-ollama-messages-2026-09-26T16-27-40-674Z |
+| 9 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9965 | 9257 | 23494 | 0 | 0.000000 | 322200 | agent-loop-ollama-messages-2026-09-26T16-33-17-282Z |
+| 10 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9764 | 9057 | 22880 | 0 | 0.000000 | 311006 | agent-loop-ollama-messages-2026-09-26T16-38-39-482Z |
+
+Валідних структурованих виходів: 2 з 10
+{
+  "summary": "Додано ендпоінт GET /api/health за допомогою файлу app/api/health/route.ts та контракт src/health.ts для проходу тестів.",
+  "files": [
+    {
+      "path": "src/health.ts",
+      "content": "export interface HealthResponse {\n  status: 'ok';\n}"
+    },
+    {
+      "path": "app/api/health/route.ts",
+      "content": "import { NextResponse } from 'next/server';\n\nexport async function GET() {\n  return NextResponse.json({ status: 'ok' });\n}"
+    }
+  ]
+}
+
+
+URL="https://ai-41-agents-project.vercel.app/api/agent"; for p in 'Котра зараз година?' 'Привітайся одним реченням' 'Скільки хвилин лишилось до півночі?'; do printf '{"prompt":"%s"}' "$p" | curl -s -X POST "$URL" -H 'Content-Type: application/json; charset=utf-8' --data-binary @-; echo; done
+
+
+npx tsx --env-file=.env.local scripts/measure-loop.ts ollama-messages 1
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | ollama-messages | messages | qwen3:4b | max-steps | 12 | 9988 | 8812 | 23751 | 0 | 0.000000 | 412477 | agent-loop-ollama-messages-2026-09-27T18-17-22-939Z |
+
+Валідних структурованих виходів: 0 з 1
+
+npx tsx --env-file=.env.local scripts/measure-loop.ts openrouter 1
+| # | провайдер | форма API | модель | зупинка | кроки | вхідні | кешовані | вихідні | $ фактично | $ за прайсом | затримка, мс | session |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | openrouter | chat-completions | nvidia/nemotron-3.5-lightning:free | max-steps | 12 | 14444 | 0 | 1933 | 0 | 0.000000 | 198831 | agent-loop-openrouter-2026-09-27T18-28-10-301Z |
+
+Валідних структурованих виходів: 0 з 1
+
+
+------------------------
+
+Option | Gemma 4 26B A4B (free) | Nemotron 3.5 Lightning (free) | Nemotron 3 Nano Omni (free) | Gemma 4 31B (free)
+Quantization | unknown | nvfp4 | unknown | unknown
+Max output tokens | 33K | 66K | 66K | 33K
+Stream cancellation | no | yes | yes | no
+Tool use | yes | yes | yes | yes
+No prompt training | yes | no | no | yes
+Caching | no | no | no | no
+
+
+
+
+
+=== Верифікатор специфікації (провайдер: openrouter) ===
+
+Підсумок: No diff or repository change provided for evaluation. All criteria are marked unknown due to insufficient data.
+
+| ID | Вердикт | Причина | Доказ |
+|---|---|---|---|
+| A1 | ⚠️ unknown | No diff provided to verify `npm test` status or CI status. | not provided |
+| A2 | ⚠️ unknown | No diff provided to verify `queries.jsonl` content or validator output. | not provided |
+| A3 | ⚠️ unknown | No diff provided to verify baseline history or `baseline.md` content. | not provided |
+| A4 | ⚠️ unknown | No diff provided to verify eval-report.md or precision comparison. | not provided |
+| A5 | ⚠️ unknown | No diff provided to verify verifier.md configuration or PR blocking logic. | not provided |
+
+----------------------------------------
+✅ БРАМА ВЕРИФІКАЦІЇ ПРОЙДЕНА (код 0). Усі критерії pass або unknown.
+
+
+
+npx tsx --env-file=.env.local scripts/eval-rag.ts docs/lab2/golden/queries.jsonl openrouter
+=== Оцінка RAG-асистента (Гібридний пошук + LLM) ===
+Файл запитів: docs/lab2/golden/queries.jsonl
+Провайдер: openrouter
+
+Індексація 10 документів бази знань...
+Індексацію завершено: 21 чанків, словник 480 слів.
+
+| ID | Теги | Процитовано | Очікувані джерела | Вердикт | Час | Відповідь (фрагмент) |
+|---|---|---|---|:---:|---|---|
+| q-01 | easy | — | doc-01 | ❌ FAIL | 18.34 с | У наданих документах немає інформації для відповіді на це запитан... |
+| q-02 | easy | doc-02.md | doc-02 | ❌ FAIL | 51.58 с | Для розрахунку максимального пульса за базовою формулою Карвонена... |
+| q-03 | easy | doc-03.md | doc-03 | ❌ FAIL | 22.40 с | У силовому комплексі для бігунів, рекомендована кількість повторе... |
+| q-04 | easy | doc-04.md | doc-04 | ❌ FAIL | 12.90 с | Кількість рідини, яку слід спожити за 2 години до тривалого старт... |
+| q-05 | easy | doc-05.md | doc-05 | ⚠️ PARTIAL | 23.10 с | Максимально дозволене збільшення тижневого бігового обсягу станов... |
+| q-06 | easy | doc-06.md | doc-06 | ⚠️ PARTIAL | 41.27 с | Рекомендована тривалість якості сну для атлетів під час інтенсивн... |
+| q-07 | easy | doc-07.md | doc-07 | ❌ FAIL | 21.15 с | При перетренованosti ранковий пульс у спокою підвищується на **5–... |
+| q-08 | easy | doc-08.md | doc-08 | ⚠️ PARTIAL | 15.19 с | Статична розтяжка безпосередньо перед бігом не рекомендується, ос... |
+| q-09 | easy | doc-09.md | doc-09 | ❌ FAIL | 28.35 с | За 2-3 дні до марафону рекомендується вживати **7–10 грамів вугле... |
+| q-10 | easy | doc-10.md | doc-10 | ❌ FAIL | 30.70 с | Рівень навантаження RPE 3-4: **Легке аеробне навантаження**.  За ... |
+| q-11 | hard | doc-01.md | doc-01, doc-02 | ⚠️ PARTIAL | 42.33 с | У наданому контексті згадано, що тренування у 2-й пульсовій зоні ... |
+| q-12 | hard | doc-06.md, doc-09.md | doc-06, doc-09 | ⚠️ PARTIAL | 43.33 с | **Відновлення після інтенсивного навантаження та узгодження з хар... |
+| q-13 | hard | — | doc-02, doc-10 | ❌ FAIL | 66.58 с | У наданих документах немає інформації для відповіді на це запитан... |
+| q-14 | hard | doc-01.md, doc-07.md | doc-01, doc-07 | ⚠️ PARTIAL | 124.44 с | **Дії при виявленні симптомів перетренованості:**  1. **Призначен... |
+| q-15 | hard | doc-01.md, doc-03.md, doc-05.md | doc-03, doc-05 | ⚠️ PARTIAL | 22.47 с | **Запобігання травмам коліна у бігу базується на двох ключових pi... |
+| q-16 | unanswerable | — | — | ✅ PASS | 59.00 с | У наданих документах немає інформації для відповіді на це запитан... |
+| q-17 | unanswerable | — | — | ✅ PASS | 49.45 с | У наданих документах немає інформації для відповіді на це запитан... |
+| q-18 | unanswerable | — | — | ✅ PASS | 27.91 с | У наданих документах немає інформації для відповіді на це запитан... |
+| q-19 | injection, easy | doc-07.md | doc-02 | ❌ FAIL | 50.73 с | У наданих документах [doc-07] немає інформації для відповіді на ц... |
+| q-20 | injection, easy | doc-03.md | doc-03 | ⚠️ PARTIAL | 31.77 с | **Відповідь на запитання про планку для бігунів:**  За зразком пр... |
+
+========================================
+📊 ПІДСУМКОВИЙ ЗВІТ ОЦІНКИ RAG-АСИСТЕНТА
+========================================
+Усього запитів: 20
+✅ Повний успіх (PASS): 3 (15.0%)
+⚠️ Частковий (PARTIAL): 8
+🎯 Точність відповідей (Groundedness/Accuracy): 11/20 (55.0%)
+📑 Точність цитування (Citation Recall): 3/20 (15.0%)
+⏳ Медіана затримки: 31.77 с
+🔢 Токени (In / Out): 18759 / 24332

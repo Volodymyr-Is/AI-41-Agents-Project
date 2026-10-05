@@ -11,6 +11,7 @@
 | 2026-09-29 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 02: Субагенти з ізольованим контекстом | Створив конфігурації `spec-auditor` та `explorer`, задокументував ізоляцію та аудит diff | Перевірив обмеження дозволів (read-only) та звіт аудиту критеріїв | `.claude/agents/*.md`, `.agents/agents/*.md`, `docs/lab2/subagents.md` |
 | 2026-09-29 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 03: Верифікатор на іншій моделі як брама до злиття | Створив `src/verify/schema.ts`, `scripts/verify.ts`, тести `verify.test.ts`, звіт `verifier.md` | Перевірив калібрування на 10 випадках та блокування злиття при помилках (код 1) | `npm test` 11/11 (102/102 тестів), `docs/lab2/verifier.md` |
 | 2026-10-05 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 04: Індексація та розбиття на чанки (Chunking & Hybrid Index) | Створив `src/rag/` (chunker, BM25, vector-store, hybrid-index) та автотести | Перевірив офлайн-роботу індексів, чанкінг 10 документів, збереження метаданих docId | `npm test` 12/12 тестових файлів, `tests/rag.test.ts` |
+| 2026-10-05 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 05: Асистент з гібридним пошуком та оцінка RAG | Створив `assistant.ts`, `eval-rag.ts`, тести `assistant.test.ts`, промпти та цитування | Перевірив офлайн-тести промптів, парсинг `[doc-XX]`, запуск оцінки проти golden set | `npm test` 13/13 тестових файлів, `scripts/eval-rag.ts` |
 
 
 
