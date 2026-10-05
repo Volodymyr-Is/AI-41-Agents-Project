@@ -10,6 +10,7 @@
 | 2026-09-29 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 01: Еталонний набір запитів, валідатор та базова лінія | Створив валідатор `validate-golden.ts`, 20 запитів у `queries.jsonl`, скрипт `baseline.ts`, звіти | Перевірив проходження валідатора, пороги тегів (`unanswerable`, `injection`) та тести Vitest | `npm test` 10/10 (99/99 тестів), `validate-golden.ts` OK | `docs/lab2/eval-set.md` |
 | 2026-09-29 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 02: Субагенти з ізольованим контекстом | Створив конфігурації `spec-auditor` та `explorer`, задокументував ізоляцію та аудит diff | Перевірив обмеження дозволів (read-only) та звіт аудиту критеріїв | `.claude/agents/*.md`, `.agents/agents/*.md`, `docs/lab2/subagents.md` |
 | 2026-09-29 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 03: Верифікатор на іншій моделі як брама до злиття | Створив `src/verify/schema.ts`, `scripts/verify.ts`, тести `verify.test.ts`, звіт `verifier.md` | Перевірив калібрування на 10 випадках та блокування злиття при помилках (код 1) | `npm test` 11/11 (102/102 тестів), `docs/lab2/verifier.md` |
+| 2026-10-05 | Antigravity IDE, Gemini 3.7 Flash | default (L1) | L1 | Крок 04: Індексація та розбиття на чанки (Chunking & Hybrid Index) | Створив `src/rag/` (chunker, BM25, vector-store, hybrid-index) та автотести | Перевірив офлайн-роботу індексів, чанкінг 10 документів, збереження метаданих docId | `npm test` 12/12 тестових файлів, `tests/rag.test.ts` |
 
 
 
