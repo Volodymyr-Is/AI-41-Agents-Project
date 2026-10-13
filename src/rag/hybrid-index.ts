@@ -12,7 +12,7 @@ export interface ResolvedSearchOptions {
 
 export const DEFAULT_SEARCH_OPTIONS: ResolvedSearchOptions = {
   topK: 3,
-  minScore: 0.01,
+  minScore: 0.001,
   weightLexical: 0.5,
   weightSemantic: 0.5,
 };
@@ -76,6 +76,8 @@ export class HybridIndex {
       lexicalScore: number;
       semanticScore: number;
       rrfScore: number;
+      rankWords: number | null;
+      rankVector: number | null;
     }>();
 
     // RRF constant
@@ -90,6 +92,8 @@ export class HybridIndex {
         lexicalScore: res.score,
         semanticScore: 0,
         rrfScore: rrf,
+        rankWords: rank + 1,
+        rankVector: null,
       });
     });
 
@@ -101,12 +105,15 @@ export class HybridIndex {
       if (existing) {
         existing.semanticScore = res.score;
         existing.rrfScore += rrf;
+        existing.rankVector = rank + 1;
       } else {
         scoreMap.set(chunkId, {
           chunk: res.chunk,
           lexicalScore: 0,
           semanticScore: res.score,
           rrfScore: rrf,
+          rankWords: null,
+          rankVector: rank + 1,
         });
       }
     });
@@ -117,11 +124,21 @@ export class HybridIndex {
         score: entry.rrfScore,
         lexicalScore: entry.lexicalScore,
         semanticScore: entry.semanticScore,
+        rankWords: entry.rankWords,
+        rankVector: entry.rankVector,
       }))
       .filter((res) => res.score >= minScore)
       .sort((a, b) => b.score - a.score);
 
     return combined.slice(0, topK);
+  }
+
+  public getBm25(): BM25Index {
+    return this.bm25;
+  }
+
+  public getVectorStore(): VectorStore {
+    return this.vectorStore;
   }
 
   public getChunks(): Chunk[] {

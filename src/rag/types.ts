@@ -31,6 +31,8 @@ export interface ScoredChunk {
   score: number;
   lexicalScore?: number | undefined;
   semanticScore?: number | undefined;
+  rankVector?: number | null | undefined;
+  rankWords?: number | null | undefined;
 }
 
 export interface SearchOptions {

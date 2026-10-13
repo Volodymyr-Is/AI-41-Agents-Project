@@ -9,7 +9,7 @@
 - **Модель-суддя (Judge Model):** OpenRouter (`nvidia/nemotron-3.5-lightning:free`) / Google Gemini (`gemini-2.5-flash`).
 - **Модель-автор коду (Worker Model):** Antigravity IDE (Gemini 3.7 Flash) / Claude.
 - **Принцип незалежності:** Модель, яка перевіряє зміни, є відокремленим LLM-суддею, який оцінює лише переданий `git diff` відносно критеріїв `A1`–`A5` без доступу до контексту генерації коду.
-- **Точка входу:** [`scripts/verify.ts`](file:///c:/Users/volod/OneDrive/Документи/GitHub/AI-41-Agents-Project/scripts/verify.ts).
+- **Точка входу:** [`scripts/verify.ts`](file:///c:/Users/volod/OneDrive/Документи/GitHub/AI-41-Agents-Project/scripts/verify.ts) (команда `npm run verify` у `package.json`).
 - **Схема виходу:** Строга Zod-схема [`src/verify/schema.ts`](file:///c:/Users/volod/OneDrive/Документи/GitHub/AI-41-Agents-Project/src/verify/schema.ts).
 
 ---
