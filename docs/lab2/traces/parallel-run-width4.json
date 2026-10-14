@@ -1,0 +1,18 @@
+{
+  "runAt": "2026-10-14T14:14:41.697Z",
+  "provider": "openrouter",
+  "model": "google/gemma-4-31b-it:free",
+  "budget": {
+    "maxBranches": 4,
+    "maxTokens": 200000,
+    "maxWallMs": 600000
+  },
+  "wallMs": 658918,
+  "sumBranchMs": 1024643,
+  "speedup": 1.56,
+  "inputTokens": 20585,
+  "outputTokens": 84873,
+  "done": 20,
+  "failed": [],
+  "stoppedEarly": false
+}
