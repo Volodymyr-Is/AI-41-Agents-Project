@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-10-20T11:24:48.795Z",
+  "source": "sports-journal-app",
+  "clientName": "sports-journal-app",
+  "userScenario": "Спортсмен вносить нове тренування та запитує розрахунок цільових пульсових зон",
+  "userQuery": "Як правильно розрахувати пульсові зони за формулою Карвонена?",
+  "mcpCalls": [
+    {
+      "tool": "search_knowledge_base",
+      "arguments": {
+        "query": "формула Карвонена пульсові зони",
+        "topK": 2
+      },
+      "resultSummary": {
+        "totalFound": 2,
+        "topCitation": "[doc-02]",
+        "topChunkId": "doc-02#chunk-0"
+      },
+      "latencyMs": 5
+    },
+    {
+      "tool": "get_document_by_id",
+      "arguments": {
+        "id": "doc-02"
+      },
+      "resultSummary": {
+        "id": "doc-02",
+        "title": "Розрахунок пульсових зон за формулою Карвонена",
+        "license": "Public Domain",
+        "length": 791
+      },
+      "latencyMs": 2
+    }
+  ],
+  "finalApplicationOutput": {
+    "adviceTitle": "Розрахунок пульсових зон для щоденника тренувань",
+    "keyPoints": [
+      "Формула Карвонена: ЧСС_цільова = ((ЧСС_макс - ЧСС_спокою) * %інтенсивності) + ЧСС_спокою [doc-02].",
+      "Для аеробної зони відновлення рекомендується діапазон 60-70% резерву пульсу [doc-02].",
+      "Обов'язково вимірювати ЧСС спокою вранці до підйому з ліжка для точності розрахунку."
+    ],
+    "citations": [
+      "[doc-02]"
+    ]
+  },
+  "totalLatencyMs": 1245
+}

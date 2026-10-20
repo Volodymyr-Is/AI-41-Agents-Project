@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "sports-journal": {
+      "command": "npx",
+      "args": ["tsx", "src/mcp/server.ts"],
+      "env": {}
+    }
+  }
+}

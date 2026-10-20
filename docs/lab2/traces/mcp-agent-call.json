@@ -1,0 +1,76 @@
+[
+  {
+    "timestamp": "2026-10-20T11:24:40.035Z",
+    "source": "coding-agent",
+    "agentName": "antigravity-coding-agent",
+    "serverCommand": "npx tsx src/mcp/server.ts",
+    "action": "tools/list",
+    "input": {},
+    "output": {
+      "tools": [
+        {
+          "name": "search_knowledge_base",
+          "description": "Гібридний пошук (BM25 + Semantic) по верифікованих статтях спортивного щоденника з цитуванням джерел [doc-XX]. Межа: виключно зареєстровані статті docs/lab2/data, topK <= 5."
+        },
+        {
+          "name": "get_document_by_id",
+          "description": "Отримання повного тексту та метаданих спортивної статті за її ID (doc-01 ... doc-10). Межа: сувора заборона path traversal, читання лише файлів із білого списку."
+        }
+      ]
+    },
+    "latencyMs": 5
+  },
+  {
+    "timestamp": "2026-10-20T11:24:40.043Z",
+    "source": "coding-agent",
+    "agentName": "antigravity-coding-agent",
+    "serverCommand": "npx tsx src/mcp/server.ts",
+    "action": "tools/call:search_knowledge_base",
+    "input": {
+      "query": "періодизація навантажень мезоцикли",
+      "topK": 2
+    },
+    "output": {
+      "query": "періодизація навантажень мезоцикли",
+      "totalFound": 2,
+      "results": [
+        {
+          "chunkId": "doc-05#chunk-1",
+          "docId": "doc-05",
+          "title": "[doc-05] Періодизація навантажень: мезоцикли та макроцикли",
+          "content": "Щотижневий біговий обсяг не повинен збільшуватися більш ніж на 10% порівняно з попереднім тижнем, щоб запобігти стресовим травмам окістя та сухожиль.",
+          "score": 0.0164,
+          "citation": "[doc-05]"
+        },
+        {
+          "chunkId": "doc-05#chunk-0",
+          "docId": "doc-05",
+          "title": "[doc-05] Періодизація навантажень: мезоцикли та макроцикли",
+          "content": "- **Макроцикл:** Загальний план підготовки на сезон або 6-12 місяців (підготовка до цільового старту/марафону).\n- **Мезоцикл:** Середній блок із 3-6 мікроциклів (тижнів), спрямований на розвиток конкретної якості (наприклад, базова витривалість, швидкісна витривалість, тейпер/підведення).\n- **Мікроцикл:** Тижневий розклад окремих тренувальних занять.",
+          "score": 0.0161,
+          "citation": "[doc-05]"
+        }
+      ]
+    },
+    "latencyMs": 5
+  },
+  {
+    "timestamp": "2026-10-20T11:24:40.048Z",
+    "source": "coding-agent",
+    "agentName": "antigravity-coding-agent",
+    "serverCommand": "npx tsx src/mcp/server.ts",
+    "action": "tools/call:get_document_by_id",
+    "input": {
+      "id": "doc-05"
+    },
+    "output": {
+      "id": "doc-05",
+      "title": "Періодизація навантажень: мезоцикли та макроцикли",
+      "source": "Конспект лекцій з теорії спорту",
+      "license": "Власний конспект",
+      "chunksCount": 2,
+      "contentSnippet": "# [doc-05] Періодизація навантажень: мезоцикли та макроцикли\n\n## 1. Ієрархія періодизації\n- **Макроцикл:** Загальний план підготовки на сезон або 6-12..."
+    },
+    "latencyMs": 5
+  }
+]

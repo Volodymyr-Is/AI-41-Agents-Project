@@ -1,0 +1,16 @@
+{
+  "server": {
+    "name": "sports-journal-mcp",
+    "transport": "stdio",
+    "command": "npx",
+    "args": ["tsx", "src/mcp/server.ts"]
+  },
+  "client": {
+    "name": "sports-journal-app",
+    "version": "1.0.0"
+  },
+  "timeouts": {
+    "requestTimeoutMs": 15000,
+    "spawnTimeoutMs": 5000
+  }
+}

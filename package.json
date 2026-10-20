@@ -19,7 +19,9 @@
     "sync-skills": "tsx scripts/sync-skills.ts",
     "log:import": "tsx scripts/transcript-to-jsonl.ts",
     "verify": "tsx scripts/verify.ts docs/lab2/verify-input.diff",
-    "mcp:server": "tsx src/mcp/server.ts"
+    "mcp:server": "tsx src/mcp/server.ts",
+    "mcp:agent-demo": "tsx scripts/mcp-agent-runner.ts",
+    "mcp:app-demo": "tsx scripts/mcp-app-runner.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.82",
