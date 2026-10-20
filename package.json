@@ -18,24 +18,27 @@
     "doctor": "tsx scripts/doctor.ts",
     "sync-skills": "tsx scripts/sync-skills.ts",
     "log:import": "tsx scripts/transcript-to-jsonl.ts",
-    "verify": "tsx scripts/verify.ts docs/lab2/verify-input.diff"
+    "verify": "tsx scripts/verify.ts docs/lab2/verify-input.diff",
+    "mcp:server": "tsx src/mcp/server.ts"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.82",
     "@ai-sdk/openai-compatible": "^3.0.57",
     "@langfuse/otel": "^5.11.1",
     "@langfuse/vercel-ai-sdk": "^5.11.1",
+    "@modelcontextprotocol/client": "^2.3.1",
+    "@modelcontextprotocol/server": "^2.3.1",
     "@opentelemetry/sdk-node": "^0.222.0",
     "ai": "^7.0.118",
     "next": "^16.3.4",
     "ollama-ai-provider-v2": "^4.0.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "zod": "^4.5.4"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@types/node": "^24.13.3",
+    "@types/node": "^24.19.2",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "eslint": "^9.39.5",
