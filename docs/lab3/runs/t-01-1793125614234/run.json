@@ -1,0 +1,26 @@
+{
+  "task_id": "t-01",
+  "agent_path": "openrouter-agent",
+  "artifact_dir": "runs\\t-01-1793125614234",
+  "started_at": "2026-10-27T18:26:54.234Z",
+  "ended_at": "2026-10-27T18:28:32.693Z",
+  "duration_s": 98.5,
+  "exit_status": "ok",
+  "acceptance": [
+    {
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "cmd": "npm test -- tests/met-calc.test.ts",
+      "exit": 0
+    }
+  ],
+  "acceptance_passed": true,
+  "session_id": "gen-1793125616-JHSom9aNqssivvPFTXeF",
+  "input_tokens": 471,
+  "output_tokens": 3965,
+  "cost_usd_estimate": 0,
+  "trace_id": null,
+  "gates": {}
+}

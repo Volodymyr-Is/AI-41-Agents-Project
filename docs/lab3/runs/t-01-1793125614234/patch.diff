@@ -1,0 +1,53 @@
+diff --git a/src/utils/met-calc.ts b/src/utils/met-calc.ts
+new file mode 100644
+index 0000000..8843e37
+--- /dev/null
++++ b/src/utils/met-calc.ts
+@@ -0,0 +1,13 @@
++export function calculateMetCalories(met: number, weightKg: number, durationMinutes: number): number {
++  if (met <= 0) {
++    throw new Error('MET must be a positive number');
++  }
++  if (weightKg <= 0) {
++    throw new Error('weightKg must be a positive number');
++  }
++  if (durationMinutes <= 0) {
++    throw new Error('durationMinutes must be a positive number');
++  }
++  const calories = met * weightKg * (durationMinutes / 60);
++  return Math.round(calories * 10) / 10;
++}
+\ No newline at end of file
+diff --git a/tests/met-calc.test.ts b/tests/met-calc.test.ts
+new file mode 100644
+index 0000000..b2b289a
+--- /dev/null
++++ b/tests/met-calc.test.ts
+@@ -0,0 +1,26 @@
++import { describe, it, expect } from 'vitest';
++import { calculateMetCalories } from '../src/utils/met-calc';
++
++describe('calculateMetCalories', () => {
++  it('calculates calories using MET formula', () => {
++    const result = calculateMetCalories(3.5, 70, 60);
++    expect(result).toBe(245);
++  });
++
++  it('rounds to 1 decimal place', () => {
++    const result = calculateMetCalories(1.5, 65, 45);
++    expect(result).toBe(73.1);
++  });
++
++  it('throws on negative MET', () => {
++    expect(() => calculateMetCalories(-3, 70, 60)).toThrow();
++  });
++
++  it('throws on negative weight', () => {
++    expect(() => calculateMetCalories(3, -70, 60)).toThrow();
++  });
++
++  it('throws on negative duration', () => {
++    expect(() => calculateMetCalories(3, 70, -60)).toThrow();
++  });
++});
+\ No newline at end of file
