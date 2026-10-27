@@ -1,54 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    "incremental": true,
-    "noEmit": true,
+    "module": "commonjs",
     "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist"
   },
-  "include": [
-    "next-env.d.ts",
-    "next.config.ts",
-    "instrumentation.ts",
-    "instrumentation.node.ts",
-    "vitest.config.ts",
-    "playwright.config.ts",
-    "app/**/*.ts",
-    "app/**/*.tsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "scripts/**/*.ts",
-    "tests/**/*.ts",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*", "tests/**/*"]
 }
