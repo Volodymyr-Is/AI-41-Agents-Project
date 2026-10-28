@@ -7,6 +7,7 @@
 | Дата | Інструмент і модель | Режим дозволів | Рівень довіри (L0–L5) | Задача | Що запропонував / що виконав | Де і чому я втрутився | Які докази прийняв | Журнал / коміт |
 |---|---|---|---|---|---|---|---|---|
 | 2026-10-27 | Antigravity IDE, Gemini 3.8 Flash | default (L1) | L0 -> L1 | Крок 00: Фабрика задач (Task Factory) | Розробив чергу задач `tasks.jsonl`, скрипти `run-task.ts` та `run-queue.ts`, тести `run-task.test.ts`, документацію `factory.md` | Перевірив ізоляцію `git worktree`, форму задачі, офлайн-тести та звіт | `npm test`, `docs/lab3/factory.md`, `tests/harness/run-task.test.ts` | `docs/lab3/factory.md` |
+| 2026-10-28 | Antigravity IDE, Gemini 3.8 Flash | default (L1) | L1 | Крок 01: Ланцюг детермінованих брам (типи, лінт, тести, збірка) | Створив `.github/workflows/gates.yml`, `record-gates.mjs`, тести `record-gates.test.ts`, гілку `harness/red-2026-10-28` для навмисного падіння, звіт `gates.md` | Перевірив налаштування обов'язкових перевірок на GitHub (скріншоти), запуск червоної гілки в Actions та зелений прогін на main | Зелений прогін у CI, червоний прогін #40743771748, `gate-record.json`, `docs/lab3/gates.md` | `docs/lab3/gates.md` |
 
 ## Мова артефактів
 
