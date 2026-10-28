@@ -1,0 +1,11 @@
+{
+  "task_id": "t-test",
+  "artifact_dir": "runs/test-run-mock",
+  "gates": {
+    "types": "fail",
+    "lint": "skipped",
+    "tests": "skipped",
+    "build": "skipped"
+  },
+  "ci_run_url": "https://example.com/actions/runs/456"
+}

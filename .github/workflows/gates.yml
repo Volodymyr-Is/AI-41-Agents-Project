@@ -1,0 +1,124 @@
+name: gates
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  types:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      verdict: ${{ steps.g.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - id: g
+        run: |
+          npm run typecheck
+          echo "verdict=pass" >> "$GITHUB_OUTPUT"
+
+  lint:
+    needs: types
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      verdict: ${{ steps.g.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - id: g
+        run: |
+          npm run lint
+          echo "verdict=pass" >> "$GITHUB_OUTPUT"
+
+  tests:
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      verdict: ${{ steps.g.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - id: g
+        run: |
+          npm test
+          echo "verdict=pass" >> "$GITHUB_OUTPUT"
+      - if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: gate-tests
+          path: |
+            docs/lab3/runs/**
+            test-report/**
+          if-no-files-found: ignore
+
+  build:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      verdict: ${{ steps.g.outputs.verdict }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - id: g
+        run: |
+          npm run build
+          echo "verdict=pass" >> "$GITHUB_OUTPUT"
+      - if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: gate-build
+          path: |
+            dist/**
+            .next/**
+          if-no-files-found: ignore
+
+  record:
+    needs: [types, lint, tests, build]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v8
+        with:
+          path: incoming
+          merge-multiple: true
+      - name: Вердикти брам у журнал прогону
+        env:
+          V_TYPES: ${{ needs.types.result }}
+          V_LINT: ${{ needs.lint.result }}
+          V_TESTS: ${{ needs.tests.result }}
+          V_BUILD: ${{ needs.build.result }}
+        run: |
+          node scripts/harness/record-gates.mjs \
+            --types "$V_TYPES" --lint "$V_LINT" --tests "$V_TESTS" --build "$V_BUILD" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: gate-record
+          path: gate-record.json
+

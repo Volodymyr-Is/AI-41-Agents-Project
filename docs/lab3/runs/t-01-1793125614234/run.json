@@ -22,5 +22,11 @@
   "output_tokens": 3965,
   "cost_usd_estimate": 0,
   "trace_id": null,
-  "gates": {}
+  "gates": {
+    "types": "pass",
+    "lint": "pass",
+    "tests": "pass",
+    "build": "pass"
+  },
+  "ci_run_url": "https://github.com/Volodymyr-Is/AI-41-Agents-Project/actions/runs/local-test"
 }
