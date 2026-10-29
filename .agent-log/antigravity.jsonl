@@ -1196,3 +1196,36 @@
 {"ts":"2026-10-29T09:56:40.644Z","tool":"run_command","input":{"CommandLine":"npm run typecheck"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
 {"ts":"2026-10-29T09:56:52.582Z","tool":"run_command","input":{"CommandLine":"npm run lint"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
 {"ts":"2026-10-29T09:57:03.724Z","tool":"run_command","input":{"CommandLine":"git status"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T10:06:51.136Z","tool":"run_command","input":{"CommandLine":"Select-String -Path \"C:\\Users\\volod\\.gemini\\antigravity-ide\\brain\\3b39dd6a-cf97-4592-80f1-1bb23859d086\\.system_generated\\steps\\2675\\content.md\" -Pattern \"step-03|Крок 03\" | Select-Object -First 20"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T10:07:10.744Z","tool":"run_command","input":{"CommandLine":"Select-String -Path \"C:\\Users\\volod\\.gemini\\antigravity-ide\\brain\\3b39dd6a-cf97-4592-80f1-1bb23859d086\\.system_generated\\steps\\2675\\content.md\" -Pattern \"stop.md\" | Select-Object -First 10"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T10:09:52.400Z","tool":"read_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T10:10:07.024Z","tool":"read_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T10:10:20.638Z","tool":"read_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:37:42.219Z","tool":"run_command","input":{"CommandLine":"git status"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:37:47.623Z","tool":"run_command","input":{"CommandLine":"git status"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:37:55.413Z","tool":"run_command","input":{"CommandLine":"git log -n 1 --oneline"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:38:28.075Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:38:38.514Z","tool":"run_command","input":{"CommandLine":"node -e \"import('ai').then(m => console.log('isStepCount:', typeof m.isStepCount, 'hasToolCall:', typeof m.hasToolCall))\""},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:39:20.728Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:39:33.172Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:39:52.532Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:39:56.882Z","tool":"run_command","input":{"CommandLine":"npm test"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:40:09.504Z","tool":"run_command","input":{"CommandLine":"node -e \"import('ai').then(m => console.log(m.isStepCount.toString(), '\\n', m.isStepCount(3).toString()))\""},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:46:43.981Z","tool":"run_command","input":{"CommandLine":"node -e \"import('ai').then(m => console.log(m.hasToolCall.toString(), '\\n', m.hasToolCall('test').toString()))\""},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:47:02.409Z","tool":"edit_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:47:11.229Z","tool":"edit_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:47:16.473Z","tool":"run_command","input":{"CommandLine":"npm test"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:47:23.912Z","tool":"run_command","input":{"CommandLine":"npm run typecheck"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:47:32.516Z","tool":"run_command","input":{"CommandLine":"npm run lint"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:47:52.482Z","tool":"schedule","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:48:15.382Z","tool":"manage_task","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:48:19.426Z","tool":"schedule","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:48:54.939Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:00.147Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:03.954Z","tool":"read_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:31.404Z","tool":"write_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:35.556Z","tool":"read_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:44.644Z","tool":"edit_file","input":{},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:51.458Z","tool":"run_command","input":{"CommandLine":"npm test"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:49:58.797Z","tool":"run_command","input":{"CommandLine":"npm run typecheck"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}
+{"ts":"2026-10-29T12:50:05.354Z","tool":"run_command","input":{"CommandLine":"git status"},"result":"ok","session":"3b39dd6a-cf97-4592-80f1-1bb23859d086","source":"antigravity"}

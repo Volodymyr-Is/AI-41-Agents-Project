@@ -1,0 +1,24 @@
+{
+  "state": "open",
+  "fails": 2,
+  "consecutiveFails": 2,
+  "openedAt": "2026-10-29T13:07:06.225Z",
+  "trip": "2 однакових відмов підряд (поріг: 2)",
+  "history": [
+    {
+      "timestamp": "2026-10-29T13:07:06.109Z",
+      "event": "pass",
+      "details": "Ручне скидання circuit breaker у closed"
+    },
+    {
+      "timestamp": "2026-10-29T13:07:06.223Z",
+      "event": "fail",
+      "details": "Помилка (1/2): Зупинено за лімітом isStepCount(2): задача не завершила генерацію"
+    },
+    {
+      "timestamp": "2026-10-29T13:07:06.225Z",
+      "event": "trip",
+      "details": "Circuit breaker OPEN: 2 однакових відмов підряд (поріг: 2)"
+    }
+  ]
+}
