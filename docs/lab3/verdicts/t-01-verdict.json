@@ -1,0 +1,29 @@
+{
+  "results": [
+    {
+      "id": "crit-export",
+      "verdict": "pass",
+      "reason": "Функція calculateMetCalories експортована зі суворою типізацією аргументів met, weightKg, durationMinutes: number",
+      "evidence": "src/utils/met-calc.ts:24"
+    },
+    {
+      "id": "crit-logic",
+      "verdict": "pass",
+      "reason": "Формула калорій met * weightKg * (durationMinutes / 60) реалізована вірно з округленням Math.round(cal * 10) / 10",
+      "evidence": "src/utils/met-calc.ts:27-28"
+    },
+    {
+      "id": "crit-validation",
+      "verdict": "pass",
+      "reason": "Реалізовано перевірку met <= 0 || weightKg <= 0 || durationMinutes <= 0 з викиданням винятку Error",
+      "evidence": "src/utils/met-calc.ts:25"
+    },
+    {
+      "id": "crit-tests",
+      "verdict": "pass",
+      "reason": "Юніт-тести покривають позитивний розрахунок та перевірку валідації додатних значень",
+      "evidence": "tests/met-calc.test.ts:1-35"
+    }
+  ]
+}
+

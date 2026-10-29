@@ -8,6 +8,7 @@
 |---|---|---|---|---|---|---|---|---|
 | 2026-10-27 | Antigravity IDE, Gemini 3.8 Flash | default (L1) | L0 -> L1 | Крок 00: Фабрика задач (Task Factory) | Розробив чергу задач `tasks.jsonl`, скрипти `run-task.ts` та `run-queue.ts`, тести `run-task.test.ts`, документацію `factory.md` | Перевірив ізоляцію `git worktree`, форму задачі, офлайн-тести та звіт | `npm test`, `docs/lab3/factory.md`, `tests/harness/run-task.test.ts` | `docs/lab3/factory.md` |
 | 2026-10-28 | Antigravity IDE, Gemini 3.8 Flash | default (L1) | L1 | Крок 01: Ланцюг детермінованих брам (типи, лінт, тести, збірка) | Створив `.github/workflows/gates.yml`, `record-gates.mjs`, тести `record-gates.test.ts`, гілку `harness/red-2026-10-28` для навмисного падіння, звіт `gates.md` | Перевірив налаштування обов'язкових перевірок на GitHub (скріншоти), запуск червоної гілки в Actions та зелений прогін на main | Зелений прогін у CI, червоний прогін #40743771748, `gate-record.json`, `docs/lab3/gates.md` | `docs/lab3/gates.md` |
+| 2026-10-29 | Antigravity IDE, Gemini 3.8 Flash | default (L1) | L1 | Крок 02: Верифікатор на іншій моделі як остання брама | Створив `verifier.ts`, `calibrate.ts`, `verify-task-cli.ts`, тести `verifier.test.ts`, провів калібрування на 10 випадках, оформив звіт `verifier.md` | Виконав калібрування в терміналі, надав емпіричні вердикти та метрики (каппа = 0.8413), перевірив артефакти вердиктів | `npm test` 169/169, `docs/lab3/verifier.md`, `docs/lab3/verdicts/`, Po=0.90, kappa=0.8413 | `docs/lab3/verifier.md` |
 
 ## Мова артефактів
 

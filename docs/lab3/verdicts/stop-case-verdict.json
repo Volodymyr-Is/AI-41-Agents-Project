@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "id": "crit-tonnage-formula",
+      "verdict": "fail",
+      "reason": "Формула розрахунку тоннажу помилкова: використовується оператор додавання reps + weightKg замість добутку reps * weightKg",
+      "evidence": "src/utils/volume-load.ts:4: return sets.reduce((acc, s) => acc + s.reps + s.weightKg, 0);"
+    },
+    {
+      "id": "crit-tonnage-negatives",
+      "verdict": "fail",
+      "reason": "Відсутня валідація від'ємних значень підходів або ваги, що прямо вимагалося критерієм",
+      "evidence": "src/utils/volume-load.ts:1-6"
+    }
+  ]
+}
+
