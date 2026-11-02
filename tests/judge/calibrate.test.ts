@@ -92,6 +92,7 @@ describe('scripts/judge/calibrate', () => {
       criterion: 'Відсутність секретів',
       artifact: 'const key = "123";',
       mine: 'fail',
+      reason: 'Знайдено захардкоджений ключ',
       holdout: false,
     };
 

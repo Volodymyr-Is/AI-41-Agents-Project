@@ -13,15 +13,19 @@ export interface JudgeCase {
   criterion: string;
   artifact: string;
   mine: Label;
+  reason: string;
   holdout: boolean;
 }
 
 export const judgeVerdictSchema = z
   .object({
     case_id: z.string().min(1),
+    dimension: z.string().optional(),
     verdict: z.enum(['pass', 'fail', 'unknown']),
     reason: z.string().min(1),
     evidence: z.string(),
+    model: z.string().optional(),
+    order: z.string().optional(),
     durationMs: z.number().optional(),
   })
   .strict();
@@ -189,6 +193,9 @@ export async function evaluateJudgeCase(
       const validated = judgeVerdictSchema.parse({
         ...parsed,
         case_id: caseItem.case_id,
+        dimension: caseItem.dimension,
+        model,
+        order: 'none',
         durationMs: Date.now() - startTime,
       });
 
