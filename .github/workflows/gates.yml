@@ -96,6 +96,32 @@ jobs:
             .next/**
           if-no-files-found: ignore
 
+  evals:
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Детерміновані оцінювачі на замороженому банку
+        timeout-minutes: 12
+        env:
+          EVAL_K: '1'
+          EVAL_BUCKET: regression
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          npx tsx scripts/evals/gate.ts
+      - if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: evals
+          path: docs/lab3/evals.jsonl
+          if-no-files-found: ignore
+
   record:
     needs: [types, lint, tests, build]
     if: ${{ !cancelled() }}
@@ -121,4 +147,3 @@ jobs:
         with:
           name: gate-record
           path: gate-record.json
-

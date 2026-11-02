@@ -19,6 +19,10 @@ export interface Task {
     readonly timeout_s: number;
   };
   readonly files?: readonly string[];
+  readonly label?: Record<string, boolean>;
+  readonly source?: string;
+  readonly bucket?: 'regression' | 'new' | 'edge';
+  readonly frozen_at?: string;
 }
 
 export interface AgentResult {
