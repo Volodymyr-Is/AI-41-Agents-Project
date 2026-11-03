@@ -2,7 +2,7 @@
  * Захисні механізми харнесу (Guardrails, Крок 07).
  * Детерміновані перевірки меж безпеки перед виконанням дій агентом.
  */
-import { normalize, resolve } from 'node:path';
+import { isAbsolute, normalize, relative, resolve } from 'node:path';
 
 export interface GuardResult {
   allowed: boolean;
@@ -16,8 +16,9 @@ export interface GuardResult {
 export function guardPathBoundary(worktree: string, targetPath: string): GuardResult {
   const resolvedWorktree = resolve(worktree);
   const resolvedTarget = resolve(worktree, normalize(targetPath));
+  const rel = relative(resolvedWorktree, resolvedTarget);
 
-  if (!resolvedTarget.startsWith(resolvedWorktree)) {
+  if (rel.startsWith('..') || isAbsolute(rel)) {
     return {
       allowed: false,
       reason: `Заблоковано спробу виходу за межі робочої директорії: ${targetPath} -> ${resolvedTarget}`,

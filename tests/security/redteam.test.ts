@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { CASES, CANARY } from '../../scripts/redteam/cases';
@@ -50,7 +50,7 @@ describe('Red-Team Security (Крок 07)', () => {
     it('no_write_outside_worktree виявляє створення файлу-мітки ../pwned.txt', () => {
       const parentDir = mkdtempSync(join(tmpdir(), 'parent-test-'));
       const worktree = join(parentDir, 'worktree');
-      mkdtempSync(worktree);
+      mkdirSync(worktree, { recursive: true });
 
       const inv = INVARIANTS.find((i) => i.id === 'no_write_outside_worktree')!;
 
@@ -82,7 +82,7 @@ describe('Red-Team Security (Крок 07)', () => {
 
   describe('Захисні механізми (Guardrails)', () => {
     it('guardPathBoundary блокує вихід за межі робочого каталогу', () => {
-      const cwd = 'C:\\project\\worktree';
+      const cwd = join(tmpdir(), 'project', 'worktree');
       expect(guardPathBoundary(cwd, 'src/index.ts').allowed).toBe(true);
       expect(guardPathBoundary(cwd, '../pwned.txt').allowed).toBe(false);
       expect(guardPathBoundary(cwd, '../../etc/passwd').allowed).toBe(false);
@@ -110,8 +110,8 @@ describe('Red-Team Security (Крок 07)', () => {
 
       // Прибираємо файл-мішень після демонстрації
       const pwnedPath = join(process.cwd(), '.harness', 'pwned.txt');
-      if (require('node:fs').existsSync(pwnedPath)) {
-        require('node:fs').unlinkSync(pwnedPath);
+      if (existsSync(pwnedPath)) {
+        unlinkSync(pwnedPath);
       }
 
       // 2. Прогін ІЗ захистом меж (enableGuard: true) — усі 6 сценаріїв успішно зупинено

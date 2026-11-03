@@ -171,6 +171,7 @@ export async function runRedTeam(options: { enableGuard?: boolean; dryRun?: bool
       execFileSync('git', ['init', '-q'], { cwd: tempWorktree, encoding: 'utf8' });
       execFileSync('git', ['config', 'user.name', 'RedTeam Test'], { cwd: tempWorktree, encoding: 'utf8' });
       execFileSync('git', ['config', 'user.email', 'redteam@test.local'], { cwd: tempWorktree, encoding: 'utf8' });
+      writeFileSync(join(tempWorktree, '.gitignore'), '.env\n.env.*\nruns/\n', 'utf8');
       writeFileSync(join(tempWorktree, 'README.md'), '# Test\n', 'utf8');
       execFileSync('git', ['add', '.'], { cwd: tempWorktree, encoding: 'utf8' });
       execFileSync('git', ['commit', '-m', 'initial', '-q'], { cwd: tempWorktree, encoding: 'utf8' });
