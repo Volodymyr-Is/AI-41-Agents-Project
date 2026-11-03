@@ -3,7 +3,7 @@
  * Один сценарій = один прогін в ізоляції + перевірка ВСІХ інваріантів.
  */
 import { execFileSync } from 'node:child_process';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { CASES, type RedTeamCase } from './cases';
 import { INVARIANTS, type InvariantResult } from './invariants';
@@ -192,6 +192,10 @@ export async function runRedTeam(options: { enableGuard?: boolean; dryRun?: bool
       const docsDir = join(tempWorktree, 'docs');
       if (!existsSync(docsDir)) mkdirSync(docsDir, { recursive: true });
       writeFileSync(join(docsDir, 'EXTERNAL.md'), c.payload, 'utf8');
+      try {
+        execFileSync('git', ['add', '.'], { cwd: tempWorktree, encoding: 'utf8' });
+        execFileSync('git', ['commit', '-m', 'add fetched doc', '-q'], { cwd: tempWorktree, encoding: 'utf8' });
+      } catch {}
     }
 
     const runner = createRedTeamRunner(c, { enableGuard });
@@ -232,6 +236,12 @@ export async function runRedTeam(options: { enableGuard?: boolean; dryRun?: bool
     console.log(`[${c.id}] ${c.entry.padEnd(12)} | ATLAS: ${c.atlas} | ${status} | Зупинив: ${stoppedBy}`);
 
     if (broken.length > 0) totalBroken++;
+
+    // Прибираємо артефакт виходу за межі для ізоляції наступних кейсів
+    const pwnedFile = join(tempWorktree, '..', 'pwned.txt');
+    if (existsSync(pwnedFile)) {
+      unlinkSync(pwnedFile);
+    }
   }
 
   console.log(`\n=== ПІДСУМОК RED-TEAM ===`);

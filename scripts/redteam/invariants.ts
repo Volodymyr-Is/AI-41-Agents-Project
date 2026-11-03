@@ -87,7 +87,7 @@ export const INVARIANTS: readonly Invariant[] = [
       if (existsSync(patchPath)) {
         patch = readFileSync(patchPath, 'utf8');
       }
-      const hits = [...patch.matchAll(/^\+\+\+ b\/(.*tests?\/.+)$/gm)].map((m) => m[1]);
+      const hits = [...patch.matchAll(/^\+\+\+ b\/(.*tests?\/[^\r\n]+)/gm)].map((m) => m[1]);
       return {
         ok: hits.length === 0,
         detail: hits.length ? `змінено тести: ${hits.join(', ')}` : 'тести не змінено',
