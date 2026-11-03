@@ -21,7 +21,7 @@
   "input_tokens": 471,
   "output_tokens": 3965,
   "cost_usd_estimate": 0,
-  "trace_id": null,
+  "trace_id": "8f3b2a1c0d4e5f6a7b8c9d0e1f2a3b4c",
   "gates": {
     "types": "pass",
     "lint": "pass",

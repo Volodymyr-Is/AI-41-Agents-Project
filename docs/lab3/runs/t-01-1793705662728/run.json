@@ -1,0 +1,26 @@
+{
+  "task_id": "t-01",
+  "agent_path": "gemini-cli",
+  "artifact_dir": "docs\\lab3\\runs\\t-01-1793705662728",
+  "started_at": "2026-11-03T11:34:22.729Z",
+  "ended_at": "2026-11-03T11:34:27.000Z",
+  "duration_s": 4.3,
+  "exit_status": "agent_failed",
+  "acceptance": [
+    {
+      "cmd": "npm run typecheck",
+      "exit": 0
+    },
+    {
+      "cmd": "npm test -- tests/met-calc.test.ts",
+      "exit": 1
+    }
+  ],
+  "acceptance_passed": false,
+  "session_id": null,
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd_estimate": null,
+  "trace_id": "72d38c278f25ab7631e3639819c1c74e",
+  "gates": {}
+}

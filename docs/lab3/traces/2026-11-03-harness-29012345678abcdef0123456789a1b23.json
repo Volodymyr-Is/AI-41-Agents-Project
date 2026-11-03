@@ -1,0 +1,37 @@
+{
+  "trace_id": "29012345678abcdef0123456789a1b23",
+  "task_id": "t-breaker-trip",
+  "attempt": 1,
+  "timestamp": "2026-11-03T10:48:55.670Z",
+  "error_class": "harness",
+  "reason": "Харнес: Circuit Breaker перейшов у стан 'open' після 2 однакових невдач підряд і заблокував виклик моделі",
+  "spans": [
+    {
+      "name": "task t-breaker-trip",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.agent.name": "harness-run-task",
+        "gen_ai.task.id": "t-breaker-trip",
+        "gen_ai.response.finish_reasons": ["circuit_breaker_open"],
+        "gen_ai.task.acceptance_passed": false
+      }
+    },
+    {
+      "name": "harness.circuit_breaker.allow",
+      "kind": "INTERNAL",
+      "attributes": {
+        "circuit_breaker.state": "open",
+        "circuit_breaker.consecutive_failures": 2,
+        "circuit_breaker.cooldown_remaining_s": 900
+      }
+    }
+  ],
+  "metrics": {
+    "duration_s": 0.05,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cost_usd_estimate": 0.0
+  },
+  "evidence": "Запис стану в .harness/breaker.json: state: 'open', allow: false, why: '2 однакових відмов підряд'"
+}
+

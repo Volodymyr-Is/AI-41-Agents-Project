@@ -1,0 +1,37 @@
+{
+  "trace_id": "189012345678abcdef0123456789a1b2",
+  "task_id": "t-stop-demo",
+  "attempt": 1,
+  "timestamp": "2026-11-03T10:45:12.330Z",
+  "error_class": "harness",
+  "reason": "Харнес: спрацював ліміт кроків агента isStepCount(2), прогін перервано автоматичним зупиненням",
+  "spans": [
+    {
+      "name": "task t-stop-demo",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.agent.name": "harness-run-task",
+        "gen_ai.task.id": "t-stop-demo",
+        "gen_ai.response.finish_reasons": ["agent_failed"],
+        "gen_ai.task.acceptance_passed": false
+      }
+    },
+    {
+      "name": "harness.circuit_breaker.check",
+      "kind": "INTERNAL",
+      "attributes": {
+        "harness.stop_limit": "isStepCount",
+        "harness.step_limit_value": 2,
+        "harness.step_count": 2
+      }
+    }
+  ],
+  "metrics": {
+    "duration_s": 1.2,
+    "input_tokens": 620,
+    "output_tokens": 95,
+    "cost_usd_estimate": 0.0008
+  },
+  "evidence": "Запис у stop-log.jsonl: { limit: 'isStepCount', detail: 2, info: { reason: 'Досягнуто ліміту агентних кроків: 2' } }"
+}
+

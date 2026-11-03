@@ -1,0 +1,37 @@
+{
+  "trace_id": "0789012345678abcdef0123456789a1b",
+  "task_id": "t-08",
+  "attempt": 1,
+  "timestamp": "2026-11-03T10:41:40.780Z",
+  "error_class": "model",
+  "reason": "Помилка моделі: згенеровано заборонений тип any у сигнатурі DTO всупереч правилам проєкту",
+  "spans": [
+    {
+      "name": "task t-08",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.agent.name": "harness-run-task",
+        "gen_ai.task.id": "t-08",
+        "gen_ai.task.bucket": "regression",
+        "gen_ai.response.finish_reasons": ["agent_failed"],
+        "gen_ai.task.acceptance_passed": false
+      }
+    },
+    {
+      "name": "chat gemini-3.8-flash",
+      "kind": "CLIENT",
+      "attributes": {
+        "gen_ai.operation.name": "chat",
+        "gen_ai.response.finish_reasons": ["stop"]
+      }
+    }
+  ],
+  "metrics": {
+    "duration_s": 7.1,
+    "input_tokens": 1410,
+    "output_tokens": 330,
+    "cost_usd_estimate": 0.0022
+  },
+  "evidence": "Acceptance команда лінтера впала: Unexpected any. Specify a different type (@typescript-eslint/no-explicit-any)"
+}
+

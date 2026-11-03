@@ -1,0 +1,38 @@
+{
+  "trace_id": "d4e5f6789012345678abcdef01234567",
+  "task_id": "t-06",
+  "attempt": 1,
+  "timestamp": "2026-11-03T10:30:11.210Z",
+  "error_class": "tool",
+  "reason": "Збій інструменту: виклик читання файлу заблоковано через спробу Path Traversal за межі дозволеної директорії",
+  "spans": [
+    {
+      "name": "task t-06",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.agent.name": "harness-run-task",
+        "gen_ai.task.id": "t-06",
+        "gen_ai.task.bucket": "regression",
+        "gen_ai.response.finish_reasons": ["agent_failed"],
+        "gen_ai.task.acceptance_passed": false
+      }
+    },
+    {
+      "name": "execute_tool read_file",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.tool.name": "read_file",
+        "error.type": "SecurityError",
+        "error.message": "Access denied: path traversal attempted (/var/logs/../../etc/passwd)"
+      }
+    }
+  ],
+  "metrics": {
+    "duration_s": 4.2,
+    "input_tokens": 1120,
+    "output_tokens": 190,
+    "cost_usd_estimate": 0.0017
+  },
+  "evidence": "Спан execute_tool read_file має атрибут error.type: SecurityError"
+}
+

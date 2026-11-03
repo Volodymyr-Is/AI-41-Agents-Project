@@ -1,0 +1,38 @@
+{
+  "trace_id": "e5f6789012345678abcdef0123456789",
+  "task_id": "t-13",
+  "attempt": 1,
+  "timestamp": "2026-11-03T10:34:22.450Z",
+  "error_class": "tool",
+  "reason": "Збій інструменту: виклик run_command завершився помилкою EPERM під час створення директорії",
+  "spans": [
+    {
+      "name": "task t-13",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.agent.name": "harness-run-task",
+        "gen_ai.task.id": "t-13",
+        "gen_ai.task.bucket": "regression",
+        "gen_ai.response.finish_reasons": ["agent_failed"],
+        "gen_ai.task.acceptance_passed": false
+      }
+    },
+    {
+      "name": "execute_tool run_command",
+      "kind": "INTERNAL",
+      "attributes": {
+        "gen_ai.tool.name": "run_command",
+        "error.type": "CommandExecutionError",
+        "error.message": "EPERM: operation not permitted, mkdir"
+      }
+    }
+  ],
+  "metrics": {
+    "duration_s": 3.7,
+    "input_tokens": 980,
+    "output_tokens": 140,
+    "cost_usd_estimate": 0.0014
+  },
+  "evidence": "Спан execute_tool run_command зафіксував ненульовий код виходу інструменту (exit code 1)"
+}
+
