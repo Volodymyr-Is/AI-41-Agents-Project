@@ -1,0 +1,27 @@
+{
+  "traceId": "8f7a9e1d3c5b7a9e1d3c5b7a9e1d3c5b",
+  "name": "multiagent-budget-stopped-drill",
+  "timestamp": "2026-11-22T13:27:26.341Z",
+  "status": {
+    "code": "ERROR",
+    "description": "Зупинено запобіжником бюджету: turn-budget"
+  },
+  "attributes": {
+    "gen_ai.agent.name": "orchestrator/fan-in",
+    "budget.maxTurns": 2,
+    "budget.spentCalls": 0,
+    "budget.stopReason": "turn-budget",
+    "task.id": "q-stopped"
+  },
+  "events": [
+    {
+      "name": "budget_exceeded",
+      "time": "2026-11-22T13:27:26.341Z",
+      "attributes": {
+        "limit": "maxTurns",
+        "threshold": 2,
+        "attempted": 4
+      }
+    }
+  ]
+}
