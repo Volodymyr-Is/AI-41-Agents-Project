@@ -72,3 +72,20 @@
   6. Продемонстровано примусове зупинення прогону заниженим бюджетом ходів (`turn-budget`), збережено OTLP JSON-трасу в [`docs/lab4/traces/stopped-budget.json`](traces/stopped-budget.json).
   7. Складено звіт [`docs/lab4/multiagent.md`](multiagent.md).
 - **Інциденти/блокування:** Відсутні. Усі тести та перевірки типів проходять зелено.
+
+---
+
+## Сесія 05: Пам'ять і Deep Research (Крок 04)
+- **Дата:** 2026-11-22
+- **Репозиторій:** Курсовий репозиторій [`AI-41-Agents-Project`](https://github.com/Volodymyr-Is/AI-41-Agents-Project) та форк [`https://github.com/Volodymyr-Is/ms`](https://github.com/Volodymyr-Is/ms)
+- **Ціль:** Побудова персистентної пам'яті харнеса (`store.jsonl`) з трьома типами записів, обмеженнями контексту, захистом від секретів та перевіркою застарілості; виконання Deep Research на форку `ms` із 4-рядковим критерієм зупинки та детермінованою верифікацією цитат через Git.
+- **Режим роботи агента:** Створення коду пам'яті в `src/memory/`, бенчмарку в `scripts/memory/`, тестів у `tests/memory.test.ts`.
+- **Дозволені інструменти:** `npm test`, `npm run typecheck`, `npm run lint`, `git cat-file`, `git blame`, створення документації.
+- **Виконані дії:**
+  1. Розроблено схему пам'яті [`src/memory/schema.ts`](../../src/memory/schema.ts) із валідацією типів `decision`, `constraint`, `outcome`, лімітом $\le 200$ символів та блокуванням секретів і персональних даних.
+  2. Реалізовано детерміноване сховище [`src/memory/store.ts`](../../src/memory/store.ts) із підтримкою append-only запису, обмеження читання за $K$ записами і $B$ байтами, та перевіркою актуальності через `git log <sha>..HEAD -- <path>`.
+  3. Розроблено модуль [`src/memory/deep-research.ts`](../../src/memory/deep-research.ts) для дослідження brownfield-коду `ms` з 5 лініями аналізу, детермінованою верифікацією цитат через `git cat-file -p` і `git blame -L` та 4-рядковим критерієм зупинки.
+  4. Написано модульні тести [`tests/memory.test.ts`](../../tests/memory.test.ts) (8 тестів, 100% зелені).
+  5. Створено та запущено порівняльний бенчмарк [`scripts/memory/benchmark.ts`](../../scripts/memory/benchmark.ts), що зберіг канонічні записи у [`docs/lab4/memory/store.jsonl`](memory/store.jsonl) і показав 80% економію токенів та 72% прискорення виконання.
+  6. Складено підсумковий звіт [`docs/lab4/memory.md`](memory.md).
+- **Інциденти/блокування:** Відсутні. Всі 238 тестів, typecheck та lint пройшли без помилок.
