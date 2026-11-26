@@ -121,3 +121,18 @@
   4. Написано модульні тести [`tests/hardening.test.ts`](../../tests/hardening.test.ts) (8 тестів, 100% зелені) та згенеровано доказ спрацювання стелі витрат [`docs/lab4/hardening-limit-proof.json`](hardening-limit-proof.json).
   5. Складено звіт [`docs/lab4/hardening.md`](hardening.md).
 - **Інциденти/блокування:** Відсутні. Усі 29 тестових файлів (257 тестів), typecheck та lint пройшли без помилок.
+
+---
+
+## Сесія 08: Аудит вартості прогону (Крок 07)
+- **Дата:** 2026-11-26
+- **Репозиторій:** Курсовий репозиторій [`AI-41-Agents-Project`](https://github.com/Volodymyr-Is/AI-41-Agents-Project)
+- **Ціль:** Побудова детермінованого аудиту вартості на 6 кошиків `LanguageModelUsage` (`totalUsage`), збереження `null` («не повідомлено») замість `0`, облік повторів у харнесі, порівняння конфігурацій `A` та `B` на одному банку з 5 задач, та автоматична генерація звіту `docs/lab4/cost.md` скриптом.
+- **Режим роботи агента:** Розробка скриптів у `scripts/harness/`, тестів у `tests/cost-audit.test.ts`, автоматична генерація таблиць звіту.
+- **Дозволені інструменти:** `npm test`, `npm run typecheck`, `npm run lint`, генерація JSONL-трас та звіту.
+- **Виконані дії:**
+  1. Створено модуль [`scripts/harness/cost.ts`](../../scripts/harness/cost.ts) із нормалізацією 6 кошиків `LanguageModelUsage` (збереження `null` для неповідомлених полів), агрегацією `totalUsage`, механічною перевіркою узгодженості суми кроків (`verifyTotalUsageMatchesSteps`) та прогоном конфігурацій `A` і `B` із записом у [`docs/lab4/traces/cost-A-runs.jsonl`](traces/cost-A-runs.jsonl) та [`docs/lab4/traces/cost-B-runs.jsonl`](traces/cost-B-runs.jsonl).
+  2. Створено генератор звіту [`scripts/harness/cost-report.ts`](../../scripts/harness/cost-report.ts), що автоматично будує таблиці, рахує «повідомлено N/M», «токенів на 1 пройдену задачу» та прогноз масштабування ×10.
+  3. Написано модульні тести [`tests/cost-audit.test.ts`](../../tests/cost-audit.test.ts) (3 тести, перевірка `null`, `totalUsage` і генерації звіту).
+  4. Згенеровано підсумковий звіт [`docs/lab4/cost.md`](cost.md) із шістьма обов'язковими розділами.
+- **Інциденти/блокування:** Відсутні. Усі тести, typecheck та lint пройшли без помилок.
