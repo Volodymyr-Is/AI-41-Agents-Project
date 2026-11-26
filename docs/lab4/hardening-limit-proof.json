@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-11-26T11:03:50.532Z",
+  "scenario": "Application-level Spend Cap Triggered (Hobby Spend Management = N/A)",
+  "limits": {
+    "maxTokensPerDay": 5000,
+    "maxUsdPerDay": 0.05,
+    "maxRequestsPerDay": 10
+  },
+  "allowedRun": {
+    "timestamp": "2026-11-26T11:03:50.532Z",
+    "functionId": "sport-diary-workout",
+    "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+    "allowed": true,
+    "httpStatus": 200,
+    "tokensUsed": 5200,
+    "costUsd": 0.015
+  },
+  "blockedRun": {
+    "timestamp": "2026-11-26T11:03:50.533Z",
+    "functionId": "sport-diary-workout",
+    "trace_id": "80f198ee56343ba864fe8b2a57d3eff7",
+    "allowed": false,
+    "httpStatus": 429,
+    "code": "SPEND_LIMIT_EXCEEDED",
+    "reason": "Daily spend limit exceeded (tokens: 5200/5000, usd: 0.0150/0.05, requests: 1/10).",
+    "snapshot": {
+      "tokens": 5200,
+      "costUsd": 0.015,
+      "requests": 1
+    }
+  }
+}

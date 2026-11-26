@@ -105,3 +105,19 @@
   4. Написано модульні тести [`tests/multimodal.test.ts`](../../tests/multimodal.test.ts) (8 тестів, 100% покриття, включно з повним бенчмарком 10/10 випадків).
   5. Складено звіт [`docs/lab4/multimodal.md`](multimodal.md) із формулюванням ролі продукту, описом обробки непридатних файлів, обґрунтуванням відсутності генерації зображень та зведеною таблицею результатів.
 - **Інциденти/блокування:** Відсутні. Усі тести, перевірка типів та лінтер проходять зелено.
+
+---
+
+## Сесія 07: Зміцнення деплою (Крок 06)
+- **Дата:** 2026-11-26
+- **Репозиторій:** Курсовий репозиторій [`AI-41-Agents-Project`](https://github.com/Volodymyr-Is/AI-41-Agents-Project)
+- **Ціль:** Зміцнення застосунку перед виходом у продакшн: фіксація лімітів платформи Vercel Hobby, налаштування приватної телеметрії OTLP/HTTP із двосторонньою прив'язкою трас, реалізація програмного Kill Switch (fail-closed) і стелі витрат, аудит гігієни секретів.
+- **Режим роботи агента:** Розробка в `src/hardening/`, тестування у `tests/hardening.test.ts`, збереження артефакту-доказу `docs/lab4/hardening-limit-proof.json`.
+- **Дозволені інструменти:** `npm test`, `npm run typecheck`, `npm run lint`, сканування `src/` і `app/` без доступу до `.env`/`.env.local`.
+- **Виконані дії:**
+  1. Зафіксовано 4 обмеження Vercel Hobby (300 с, 2 ГБ / 1 vCPU, 4.5 МБ тіло, регіон `iad1`) та створено безпечну конфігурацію приватної телеметрії (`recordInputs: false`, `recordOutputs: false`) у [`src/hardening/config.ts`](../../src/hardening/config.ts).
+  2. Реалізовано захисник [`src/hardening/guard.ts`](../../src/hardening/guard.ts) (`ProductionHardeningGuard`) із динамічним Kill Switch (`503`, fail-closed), лімітом розміру (`413`) та стелею денних витрат (`429 SPEND_LIMIT_EXCEEDED`).
+  3. Створено детермінований аудит секретів [`src/hardening/secrets-audit.ts`](../../src/hardening/secrets-audit.ts), який підтвердив захист `.gitignore`, безпечність `.env.example` і відсутність захардкоджених ключів у коді.
+  4. Написано модульні тести [`tests/hardening.test.ts`](../../tests/hardening.test.ts) (8 тестів, 100% зелені) та згенеровано доказ спрацювання стелі витрат [`docs/lab4/hardening-limit-proof.json`](hardening-limit-proof.json).
+  5. Складено звіт [`docs/lab4/hardening.md`](hardening.md).
+- **Інциденти/блокування:** Відсутні. Усі 29 тестових файлів (257 тестів), typecheck та lint пройшли без помилок.
