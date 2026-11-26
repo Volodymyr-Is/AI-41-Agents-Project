@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T11:48:21.910Z",
+  "generatedAt": "2026-11-26T11:59:10.144Z",
   "scenario": "Application-level Spend Cap Triggered (Hobby Spend Management = N/A)",
   "limits": {
     "maxTokensPerDay": 5000,
@@ -7,7 +7,7 @@
     "maxRequestsPerDay": 10
   },
   "allowedRun": {
-    "timestamp": "2026-11-26T11:48:21.908Z",
+    "timestamp": "2026-11-26T11:59:10.143Z",
     "functionId": "sport-diary-workout",
     "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
     "allowed": true,
@@ -16,7 +16,7 @@
     "costUsd": 0.015
   },
   "blockedRun": {
-    "timestamp": "2026-11-26T11:48:21.910Z",
+    "timestamp": "2026-11-26T11:59:10.144Z",
     "functionId": "sport-diary-workout",
     "trace_id": "80f198ee56343ba864fe8b2a57d3eff7",
     "allowed": false,
