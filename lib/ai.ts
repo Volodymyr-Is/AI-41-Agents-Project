@@ -2,9 +2,20 @@ import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { CATALOG } from '@/src/models';
-import type { AIAnalysis, ExerciseItem } from './types';
+import { createSafeTelemetryConfig } from '@/src/hardening/config';
+import { buildFreeTTSOutput } from '@/src/multimodal/processor';
+import type { AIAnalysis, AIUsageMetrics, ExerciseItem, RagCitation } from './types';
 
-function buildWorkoutPrompt(exercises: ExerciseItem[]): string {
+export interface AnalyzeWorkoutOptions {
+  ragSources?: RagCitation[] | undefined;
+  constraints?: string[] | undefined;
+  traceId?: string | undefined;
+}
+
+function buildWorkoutPrompt(
+  exercises: ExerciseItem[],
+  options: AnalyzeWorkoutOptions = {}
+): string {
   const workoutDescription = exercises
     .map((ex, i) => {
       if (ex.type === 'strength') {
@@ -14,12 +25,26 @@ function buildWorkoutPrompt(exercises: ExerciseItem[]): string {
     })
     .join('\n');
 
+  const ragBlock =
+    options.ragSources && options.ragSources.length > 0
+      ? `\nVerified Sports Knowledge Base Context (use these protocols where relevant):\n${options.ragSources
+          .map((s) => `- [${s.id}] ${s.title}: ${s.snippet}`)
+          .join('\n')}\n`
+      : '';
+
+  const constraintsBlock =
+    options.constraints && options.constraints.length > 0
+      ? `\nAthlete Personal Constraints & Injuries (STRICTLY RESPECT THESE):\n${options.constraints
+          .map((c) => `- ${c}`)
+          .join('\n')}\n`
+      : '';
+
   return `
 You are an elite Sports Scientist and Certified Strength & Conditioning Specialist (CSCS).
 Analyze the following workout session log:
 
 ${workoutDescription}
-
+${ragBlock}${constraintsBlock}
 Provide actionable, high-quality, professional feedback structured strictly into JSON matching this format:
 {
   "remove": ["Specific redundant or risky exercise / junk volume to remove or avoid"],
@@ -35,14 +60,44 @@ Return ONLY pure valid JSON without markdown fences.
 `;
 }
 
-export async function analyzeWorkout(exercises: ExerciseItem[]): Promise<AIAnalysis> {
+function enrichAnalysis(
+  base: AIAnalysis,
+  meta: {
+    provider: string;
+    model: string;
+    latencyMs: number;
+    usage?: AIUsageMetrics | undefined;
+    sources?: RagCitation[] | undefined;
+    traceId?: string | undefined;
+  }
+): AIAnalysis {
+  const spokenSummary = `${base.summary} Workout score: ${base.score} out of 100. Recommended recovery: ${base.estimatedRecoveryHours} hours. Key improvement: ${base.improve[0] ?? 'Keep consistent progressive overload.'}`;
+  const ttsRes = buildFreeTTSOutput(spokenSummary);
+  const ttsText = 'tts' in ttsRes ? ttsRes.tts.text : spokenSummary;
+
+  return {
+    ...base,
+    provider: meta.provider,
+    model: meta.model,
+    latencyMs: Math.round(meta.latencyMs),
+    usage: meta.usage,
+    sources: meta.sources,
+    ttsText,
+    traceId: meta.traceId,
+  };
+}
+
+export async function analyzeWorkout(
+  exercises: ExerciseItem[],
+  options: AnalyzeWorkoutOptions = {}
+): Promise<AIAnalysis> {
   const openRouterApiKey = process.env.OPENROUTER_API_KEY;
   const geminiApiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
   const openAiApiKey = process.env.OPENAI_API_KEY;
 
   if (openRouterApiKey && openRouterApiKey.trim() !== '') {
     try {
-      return await analyzeWithOpenRouter(exercises, openRouterApiKey.trim());
+      return await analyzeWithOpenRouter(exercises, openRouterApiKey.trim(), options);
     } catch (err) {
       console.warn('OpenRouter Gemma 4 API call failed, attempting fallback:', err);
     }
@@ -50,7 +105,7 @@ export async function analyzeWorkout(exercises: ExerciseItem[]): Promise<AIAnaly
 
   if (geminiApiKey && geminiApiKey.trim() !== '') {
     try {
-      return await analyzeWithGemini(exercises);
+      return await analyzeWithGemini(exercises, options);
     } catch (err) {
       console.warn('Gemini API call failed, attempting fallback:', err);
     }
@@ -58,16 +113,30 @@ export async function analyzeWorkout(exercises: ExerciseItem[]): Promise<AIAnaly
 
   if (openAiApiKey && openAiApiKey.trim() !== '') {
     try {
-      return await analyzeWithOpenAI(exercises, openAiApiKey);
+      return await analyzeWithOpenAI(exercises, openAiApiKey, options);
     } catch (err) {
       console.warn('OpenAI API call failed, attempting fallback:', err);
     }
   }
 
-  return generateHeuristicAnalysis(exercises);
+  const started = performance.now();
+  const heuristic = generateHeuristicAnalysis(exercises, options.constraints);
+  return enrichAnalysis(heuristic, {
+    provider: 'Offline Heuristic',
+    model: 'rule-based-coach',
+    latencyMs: Math.max(1, performance.now() - started),
+    usage: { inputTokens: null, outputTokens: null, totalTokens: null },
+    sources: options.ragSources,
+    traceId: options.traceId,
+  });
 }
 
-async function analyzeWithOpenRouter(exercises: ExerciseItem[], apiKey: string): Promise<AIAnalysis> {
+async function analyzeWithOpenRouter(
+  exercises: ExerciseItem[],
+  apiKey: string,
+  options: AnalyzeWorkoutOptions
+): Promise<AIAnalysis> {
+  const started = performance.now();
   const spec = CATALOG['gemma-4-openrouter'];
   const openrouter = createOpenAICompatible({
     name: 'openrouter',
@@ -81,31 +150,59 @@ async function analyzeWithOpenRouter(exercises: ExerciseItem[], apiKey: string):
 
   const result = await generateText({
     model: openrouter.chatModel(spec.id),
-    prompt: buildWorkoutPrompt(exercises),
+    prompt: buildWorkoutPrompt(exercises, options),
+    experimental_telemetry: createSafeTelemetryConfig('fitpulse-analyze-workout'),
   });
 
-  return parseAIResponse(result.text);
+  const inputTokens = result.usage?.inputTokens ?? null;
+  const outputTokens = result.usage?.outputTokens ?? null;
+  const totalTokens =
+    inputTokens !== null && outputTokens !== null ? inputTokens + outputTokens : null;
+
+  return enrichAnalysis(parseAIResponse(result.text), {
+    provider: 'OpenRouter',
+    model: spec.id,
+    latencyMs: performance.now() - started,
+    usage: { inputTokens, outputTokens, totalTokens },
+    sources: options.ragSources,
+    traceId: options.traceId,
+  });
 }
 
-async function analyzeWithGemini(exercises: ExerciseItem[]): Promise<AIAnalysis> {
+async function analyzeWithGemini(
+  exercises: ExerciseItem[],
+  options: AnalyzeWorkoutOptions
+): Promise<AIAnalysis> {
+  const started = performance.now();
+  const modelId = CATALOG['gemini-3.8-flash'].id;
   const result = await generateText({
-    model: google(CATALOG['gemini-3.8-flash'].id),
-    prompt: buildWorkoutPrompt(exercises),
+    model: google(modelId),
+    prompt: buildWorkoutPrompt(exercises, options),
+    experimental_telemetry: createSafeTelemetryConfig('fitpulse-analyze-workout'),
   });
 
-  return parseAIResponse(result.text);
+  const inputTokens = result.usage?.inputTokens ?? null;
+  const outputTokens = result.usage?.outputTokens ?? null;
+  const totalTokens =
+    inputTokens !== null && outputTokens !== null ? inputTokens + outputTokens : null;
+
+  return enrichAnalysis(parseAIResponse(result.text), {
+    provider: 'Google Gemini',
+    model: modelId,
+    latencyMs: performance.now() - started,
+    usage: { inputTokens, outputTokens, totalTokens },
+    sources: options.ragSources,
+    traceId: options.traceId,
+  });
 }
 
-async function analyzeWithOpenAI(exercises: ExerciseItem[], apiKey: string): Promise<AIAnalysis> {
-  const workoutDescription = exercises
-    .map((ex, i) => {
-      if (ex.type === 'strength') {
-        return `${i + 1}. [Strength] ${ex.name}: ${ex.sets} sets x ${ex.reps} reps ${ex.weight ? `(${ex.weight} kg)` : ''}`;
-      }
-      return `${i + 1}. [Cardio] ${ex.name}: Distance ${ex.distance} km, Speed ${ex.speed} km/h, Time ${ex.time} mins`;
-    })
-    .join('\n');
-
+async function analyzeWithOpenAI(
+  exercises: ExerciseItem[],
+  apiKey: string,
+  options: AnalyzeWorkoutOptions
+): Promise<AIAnalysis> {
+  const started = performance.now();
+  const modelId = CATALOG['gpt-5.6-luna'].id;
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -113,7 +210,7 @@ async function analyzeWithOpenAI(exercises: ExerciseItem[], apiKey: string): Pro
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: CATALOG['gpt-5.6-luna'].id,
+      model: modelId,
       messages: [
         {
           role: 'system',
@@ -121,7 +218,7 @@ async function analyzeWithOpenAI(exercises: ExerciseItem[], apiKey: string): Pro
         },
         {
           role: 'user',
-          content: `Analyze this workout:\n${workoutDescription}\n\nFormat:\n{"remove": string[], "improve": string[], "add": string[], "summary": string, "score": number, "estimatedRecoveryHours": number, "tags": string[]}`,
+          content: buildWorkoutPrompt(exercises, options),
         },
       ],
       response_format: { type: 'json_object' },
@@ -134,9 +231,22 @@ async function analyzeWithOpenAI(exercises: ExerciseItem[], apiKey: string): Pro
 
   const data = (await res.json()) as {
     choices?: { message?: { content?: string } }[];
+    usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number };
   };
   const text = data.choices?.[0]?.message?.content || '{}';
-  return parseAIResponse(text);
+
+  return enrichAnalysis(parseAIResponse(text), {
+    provider: 'OpenAI',
+    model: modelId,
+    latencyMs: performance.now() - started,
+    usage: {
+      inputTokens: data.usage?.prompt_tokens ?? null,
+      outputTokens: data.usage?.completion_tokens ?? null,
+      totalTokens: data.usage?.total_tokens ?? null,
+    },
+    sources: options.ragSources,
+    traceId: options.traceId,
+  });
 }
 
 function parseAIResponse(rawText: string): AIAnalysis {
@@ -164,7 +274,10 @@ function parseAIResponse(rawText: string): AIAnalysis {
   }
 }
 
-export function generateHeuristicAnalysis(exercises: ExerciseItem[]): AIAnalysis {
+export function generateHeuristicAnalysis(
+  exercises: ExerciseItem[],
+  constraints?: string[]
+): AIAnalysis {
   const strengthList = exercises.filter((e): e is Extract<ExerciseItem, { type: 'strength' }> => e.type === 'strength');
   const cardioList = exercises.filter((e): e is Extract<ExerciseItem, { type: 'cardio' }> => e.type === 'cardio');
 
@@ -229,6 +342,10 @@ export function generateHeuristicAnalysis(exercises: ExerciseItem[]): AIAnalysis
     if (totalDistance > 5) {
       addList.push('Electrolyte rehydration and foam rolling for lower body recovery.');
     }
+  }
+
+  if (constraints && constraints.length > 0) {
+    improveList.unshift(`Personal constraint respected: "${constraints[0]}". Adjust range of motion and load accordingly.`);
   }
 
   if (removeList.length === 0) {

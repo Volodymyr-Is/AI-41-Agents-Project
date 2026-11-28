@@ -9,6 +9,7 @@ import {
   CardioExercise,
   AIAnalysis,
   WorkoutSession,
+  AthleteConstraint,
 } from '@/lib/types';
 import {
   Dumbbell,
@@ -31,7 +32,13 @@ import {
   RotateCcw,
   Award,
   ArrowRight,
-  Flame
+  Flame,
+  Volume2,
+  VolumeX,
+  BookOpen,
+  ShieldAlert,
+  Cpu,
+  X
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -72,6 +79,14 @@ export default function ExercisePage() {
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<'logger' | 'history'>('logger');
 
+  // Athlete Personal Constraints (Memory - Lab 4 Step 04)
+  const [constraints, setConstraints] = useState<AthleteConstraint[]>([]);
+  const [newConstraint, setNewConstraint] = useState('');
+  const [constraintError, setConstraintError] = useState('');
+
+  // TTS Playback state (Multimodal Output - Lab 4 Step 05)
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
   const loadWorkoutHistory = async () => {
     setLoadingHistory(true);
     try {
@@ -87,6 +102,75 @@ export default function ExercisePage() {
     }
   };
 
+  const loadConstraints = async () => {
+    try {
+      const res = await fetch('/api/constraints');
+      if (res.ok) {
+        const data = await res.json();
+        setConstraints(data.constraints || []);
+      }
+    } catch (err) {
+      console.error('Failed to load constraints', err);
+    }
+  };
+
+  const handleAddConstraint = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setConstraintError('');
+    const trimmed = newConstraint.trim();
+    if (!trimmed) return;
+    try {
+      const res = await fetch('/api/constraints', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: trimmed }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setConstraintError(data.error || 'Could not save constraint');
+        return;
+      }
+      setConstraints((prev) => [data.constraint, ...prev]);
+      setNewConstraint('');
+    } catch {
+      setConstraintError('Network error while saving constraint');
+    }
+  };
+
+  const handleDeleteConstraint = async (id: string) => {
+    try {
+      const res = await fetch(`/api/constraints?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        setConstraints((prev) => prev.filter((c) => c.id !== id));
+      }
+    } catch (err) {
+      console.error('Failed to delete constraint', err);
+    }
+  };
+
+  const handleToggleTTS = () => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window) || !analysisResult) {
+      return;
+    }
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+    const textToSpeak =
+      analysisResult.ttsText ||
+      `${analysisResult.summary} Score: ${analysisResult.score} out of 100.`;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.rate = 1.0;
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    setIsSpeaking(true);
+    window.speechSynthesis.speak(utterance);
+  };
+
   // Verify auth on mount
   useEffect(() => {
     fetch('/api/auth/me')
@@ -98,6 +182,7 @@ export default function ExercisePage() {
         if (data?.user) {
           setUser(data.user);
           void loadWorkoutHistory();
+          void loadConstraints();
         } else {
           router.push('/');
         }
@@ -364,6 +449,56 @@ export default function ExercisePage() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* Athlete Personal Constraints (Memory - Lab 4) */}
+              <div className="glass-panel p-4 rounded-2xl border-slate-800 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    Athlete Memory &amp; Injury Constraints ({constraints.length})
+                  </span>
+                  <span className="text-[10px] text-slate-500">Auto-injected into AI Coach</span>
+                </div>
+                <form onSubmit={handleAddConstraint} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newConstraint}
+                    onChange={(e) => setNewConstraint(e.target.value)}
+                    maxLength={200}
+                    placeholder="e.g. Protect right knee, avoid deep squats or box jumps..."
+                    className="flex-1 bg-slate-900/90 border border-slate-700/80 rounded-lg px-3 py-1.5 text-xs text-white focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500 outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="px-3 py-1.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-semibold transition-colors"
+                  >
+                    + Add
+                  </button>
+                </form>
+                {constraintError && (
+                  <p className="text-xs text-red-400">{constraintError}</p>
+                )}
+                {constraints.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {constraints.map((c) => (
+                      <span
+                        key={c.id}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-200 text-xs"
+                      >
+                        <span>{c.text}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteConstraint(c.id)}
+                          className="text-amber-400/70 hover:text-amber-200"
+                          title="Remove constraint"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Exercise Blocks List */}
@@ -638,6 +773,37 @@ export default function ExercisePage() {
                     </div>
                   </div>
 
+                  {/* AI Provider, Latency, Tokens & TTS Controls */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px]">
+                    <div className="flex flex-wrap items-center gap-2 text-slate-300">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 font-medium">
+                        <Cpu className="w-3 h-3" />
+                        {analysisResult.provider ?? 'AI'} · {analysisResult.model ?? 'default'}
+                      </span>
+                      {analysisResult.latencyMs !== undefined && (
+                        <span className="text-slate-400">{analysisResult.latencyMs} ms</span>
+                      )}
+                      {analysisResult.usage && analysisResult.usage.totalTokens !== null && (
+                        <span className="text-slate-400">
+                          {analysisResult.usage.inputTokens ?? '?'} in / {analysisResult.usage.outputTokens ?? '?'} out tok
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleToggleTTS}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-semibold transition-all border ${
+                        isSpeaking
+                          ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                          : 'bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/30 text-emerald-300'
+                      }`}
+                    >
+                      {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                      <span>{isSpeaking ? 'Stop Audio' : 'Listen (TTS)'}</span>
+                    </button>
+                  </div>
+
                   {/* Summary */}
                   <div className="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed italic">
                     &ldquo;{analysisResult.summary}&rdquo;
@@ -721,6 +887,30 @@ export default function ExercisePage() {
                       ))}
                     </div>
                   </div>
+
+                  {/* RAG Sports Knowledge Sources */}
+                  {analysisResult.sources && analysisResult.sources.length > 0 && (
+                    <div className="space-y-2 pt-2 border-t border-slate-800/80">
+                      <div className="flex items-center gap-2 text-indigo-300 font-bold text-xs uppercase tracking-wider">
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>Sports Knowledge Base (RAG Sources)</span>
+                      </div>
+                      <div className="space-y-1.5">
+                        {analysisResult.sources.map((src) => (
+                          <div
+                            key={src.id}
+                            className="p-2.5 rounded-lg bg-indigo-950/20 border border-indigo-900/30 text-xs text-slate-300"
+                          >
+                            <div className="flex items-center justify-between gap-2 font-semibold text-indigo-200">
+                              <span>{src.title}</span>
+                              <span className="text-[10px] text-indigo-400 font-mono">RRF {src.score}</span>
+                            </div>
+                            <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">{src.snippet}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Save to Diary Button */}
                   <div className="pt-2 border-t border-slate-800 flex flex-col gap-2">

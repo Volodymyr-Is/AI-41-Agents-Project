@@ -1,7 +1,14 @@
-import { NextResponse } from 'next/server';
+import crypto from 'node:crypto';
+import { after, NextResponse } from 'next/server';
 import { analyzeWorkout } from '@/lib/ai';
 import type { ExerciseItem } from '@/lib/types';
 import { getCurrentUser } from '@/lib/auth';
+import { getConstraintsByUserId } from '@/lib/db';
+import { retrieveSportsContext } from '@/lib/rag-helper';
+import { getHardeningGuard } from '@/lib/hardening-runtime';
+import { langfuseSpanProcessor } from '@/src/otel/langfuse';
+
+export const maxDuration = 60;
 
 interface RawExercisePayload {
   id?: string;
@@ -17,13 +24,42 @@ interface RawExercisePayload {
 }
 
 export async function POST(req: Request) {
+  // Реєструємо скидання спанів OTLP до виклику моделі (вимога serverless Vercel)
+  after(async () => {
+    await langfuseSpanProcessor.forceFlush();
+  });
+
+  const traceId = crypto.randomUUID().replace(/-/g, '');
+
   try {
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized. Please login.' }, { status: 401 });
     }
 
-    const body = (await req.json()) as { exercises?: RawExercisePayload[] };
+    const rawBody = await req.text();
+    const payloadBytes = Buffer.byteLength(rawBody, 'utf-8');
+
+    // Зміцнення деплою (Крок 06): перевірка ліміту тіла, Kill Switch та денної стелі витрат
+    const guard = getHardeningGuard();
+    const decision = await guard.checkBeforeRun({
+      functionId: 'fitpulse-analyze-workout',
+      payloadBytes,
+      traceId,
+    });
+
+    if (!decision.allowed) {
+      return NextResponse.json(
+        {
+          error: decision.reason ?? 'Request blocked by production hardening guard.',
+          code: decision.code,
+          traceId,
+        },
+        { status: decision.httpStatus }
+      );
+    }
+
+    const body = JSON.parse(rawBody || '{}') as { exercises?: RawExercisePayload[] };
     const { exercises } = body;
 
     if (!exercises || !Array.isArray(exercises) || exercises.length === 0) {
@@ -56,7 +92,24 @@ export async function POST(req: Request) {
       };
     });
 
-    const analysis = await analyzeWorkout(validExercises);
+    // RAG (ЛР 2): підтягуємо релевантні протоколи зі спортивної бази знань
+    const ragSources = retrieveSportsContext(validExercises, 3);
+
+    // Пам'ять обмежень спортсмена (ЛР 4, Крок 04)
+    const userConstraints = getConstraintsByUserId(user.id).map((c) => c.text);
+
+    const analysis = await analyzeWorkout(validExercises, {
+      ragSources,
+      constraints: userConstraints,
+      traceId,
+    });
+
+    await guard.recordSuccess({
+      functionId: 'fitpulse-analyze-workout',
+      traceId,
+      tokensUsed: analysis.usage?.totalTokens ?? 0,
+      costUsd: 0, // Free Tier (OpenRouter Gemma 4 / heuristic)
+    });
 
     return NextResponse.json({
       success: true,
@@ -65,7 +118,7 @@ export async function POST(req: Request) {
   } catch (err: unknown) {
     console.error('Analysis error:', err);
     return NextResponse.json(
-      { error: 'Failed to analyze workout. Please try again.' },
+      { error: 'Failed to analyze workout. Please try again.', traceId },
       { status: 500 }
     );
   }

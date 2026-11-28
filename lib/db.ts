@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import type { DatabaseSchema, User, WorkoutSession } from './types';
+import type { AthleteConstraint, DatabaseSchema, User, WorkoutSession } from './types';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
@@ -89,6 +89,35 @@ export function deleteWorkout(id: string, userId: string): boolean {
   const initialLength = db.workouts.length;
   db.workouts = db.workouts.filter((w) => !(w.id === id && w.userId === userId));
   if (db.workouts.length !== initialLength) {
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+export function getConstraintsByUserId(userId: string): AthleteConstraint[] {
+  const db = ensureDb();
+  return (db.constraints ?? [])
+    .filter((c) => c.userId === userId)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
+export function addConstraint(constraint: AthleteConstraint): AthleteConstraint {
+  const db = ensureDb();
+  if (!db.constraints) {
+    db.constraints = [];
+  }
+  db.constraints.unshift(constraint);
+  saveDb(db);
+  return constraint;
+}
+
+export function deleteConstraint(id: string, userId: string): boolean {
+  const db = ensureDb();
+  const list = db.constraints ?? [];
+  const next = list.filter((c) => !(c.id === id && c.userId === userId));
+  if (next.length !== list.length) {
+    db.constraints = next;
     saveDb(db);
     return true;
   }

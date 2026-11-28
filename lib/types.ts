@@ -22,6 +22,19 @@ export interface CardioExercise {
 
 export type ExerciseItem = StrengthExercise | CardioExercise;
 
+export interface RagCitation {
+  id: string;
+  title: string;
+  snippet: string;
+  score: number;
+}
+
+export interface AIUsageMetrics {
+  inputTokens: number | null;
+  outputTokens: number | null;
+  totalTokens: number | null;
+}
+
 export interface AIAnalysis {
   remove: string[];
   improve: string[];
@@ -31,6 +44,13 @@ export interface AIAnalysis {
   estimatedRecoveryHours: number;
   tags?: string[] | undefined;
   analyzedAt: string;
+  provider?: string | undefined;
+  model?: string | undefined;
+  latencyMs?: number | undefined;
+  usage?: AIUsageMetrics | undefined;
+  sources?: RagCitation[] | undefined;
+  ttsText?: string | undefined;
+  traceId?: string | undefined;
 }
 
 export interface WorkoutSession {
@@ -40,6 +60,13 @@ export interface WorkoutSession {
   date: string;
   exercises: ExerciseItem[];
   analysis?: AIAnalysis | undefined;
+  createdAt: string;
+}
+
+export interface AthleteConstraint {
+  id: string;
+  userId: string;
+  text: string;
   createdAt: string;
 }
 
@@ -53,4 +80,5 @@ export interface User {
 export interface DatabaseSchema {
   users: User[];
   workouts: WorkoutSession[];
+  constraints?: AthleteConstraint[] | undefined;
 }
