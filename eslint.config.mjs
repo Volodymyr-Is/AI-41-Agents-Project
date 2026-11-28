@@ -14,6 +14,7 @@ const config = [
       'playwright-report/**',
       'blob-report/**',
       '.agent-log/**',
+      'project/**',
       'next-env.d.ts',
     ],
   },

@@ -1,6 +1,7 @@
 import { after } from 'next/server';
 
 import { google } from '@ai-sdk/google';
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { ToolLoopAgent, tool, isStepCount } from 'ai';
 import { z } from 'zod';
 
@@ -9,8 +10,26 @@ import { langfuseSpanProcessor } from '@/src/otel/langfuse';
 
 export const maxDuration = 60; // Hobby: максимум 300 с
 
+function getAgentModel() {
+  const openRouterKey = process.env.OPENROUTER_API_KEY?.trim();
+  if (openRouterKey) {
+    const spec = CATALOG['gemma-4-openrouter'];
+    const openrouter = createOpenAICompatible({
+      name: 'openrouter',
+      baseURL: spec.baseUrl ?? 'https://openrouter.ai/api/v1',
+      apiKey: openRouterKey,
+      headers: {
+        'HTTP-Referer': 'https://github.com/Volodymyr-Is/AI-41-Agents-Project',
+        'X-Title': 'FitPulse AI Agent',
+      },
+    });
+    return openrouter.chatModel(spec.id);
+  }
+  return google(CATALOG['gemini-3.8-flash'].id);
+}
+
 const agent = new ToolLoopAgent({
-  model: google(CATALOG['gemini-3.8-flash'].id), // дешева Flash-модель із безкоштовним рівнем
+  model: getAgentModel(),
   instructions: 'Для поточного часу використовуй інструмент getTime.',
   tools: {
     getTime: tool({

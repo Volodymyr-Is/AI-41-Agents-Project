@@ -33,7 +33,7 @@ export const MODEL_ROLES = [
   'embed',
 ] as const satisfies readonly ModelRole[];
 
-export type Provider = 'anthropic' | 'openai' | 'google' | 'ollama';
+export type Provider = 'anthropic' | 'openai' | 'google' | 'ollama' | 'openrouter';
 
 /**
  * Дата у форматі ISO `YYYY-MM-DD`, наприклад `'2026-10-15'`.
@@ -85,6 +85,7 @@ const ANTHROPIC_PRICING = 'https://platform.claude.com/docs/en/about-claude/pric
 const OPENAI_PRICING = 'https://developers.openai.com/api/docs/pricing';
 const GOOGLE_PRICING = 'https://ai.google.dev/gemini-api/docs/pricing';
 const OLLAMA_LIBRARY = 'https://ollama.com/library';
+const OPENROUTER_GEMMA4_PRICING = 'https://openrouter.ai/google/gemma-4-31b-it:free';
 
 /**
  * Значення змінної середовища або запасне.
@@ -217,6 +218,18 @@ export const CATALOG = {
     pricingUrl: OLLAMA_LIBRARY,
     baseUrl: LOCAL_BASE_URL,
     notes: LOCAL_LIMITS,
+  },
+  'gemma-4-openrouter': {
+    id: envOr('OPENROUTER_MODEL', 'google/gemma-4-31b-it:free'),
+    provider: 'openrouter',
+    inputPerMTok: 0,
+    outputPerMTok: 0,
+    pricingUrl: OPENROUTER_GEMMA4_PRICING,
+    baseUrl: 'https://openrouter.ai/api/v1',
+    notes: [
+      'Безкоштовний тариф OpenRouter (256K контекст, текст і зображення).',
+      'Базовий ліміт Free Tier: ~20 RPM / 50 RPD без поповнення кредитів.',
+    ],
   },
 } as const satisfies Record<string, ModelSpec>;
 
